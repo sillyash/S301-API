@@ -21,6 +21,3 @@
     ├── config.php
     ├── index.php
 
-## TODO
-
-- [ ] Routes and routing
