@@ -1,8 +1,7 @@
 <?php
-
-include_once('../config/config.php');
-include_once('db.php');
-include_once('send_email.php');
+require_once('../config/config.php');
+require_once('db.php');
+require_once('send_email.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
