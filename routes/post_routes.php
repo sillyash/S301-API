@@ -1,6 +1,7 @@
 <?php
+require_once(__DIR__ . '/../config.php');
 
-switch ($uri[2]) {
+switch ($uri[API_ROUTE_INDEX]) {
     case 'data':
         insert_data($db);
         break;
