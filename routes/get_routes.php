@@ -26,7 +26,7 @@ function get_DevTest($uri) {
         "DB_PASS" => DB_PASS,
         "EMAIL_FROM" => EMAIL_FROM,
         "EMAIL_REPLY_TO" => EMAIL_REPLY_TO,
-        "HEADERS" => HEADERS
+        "EMAIL_HEADERS" => EMAIL_HEADERS
     );
     
     echo json_encode($response);
