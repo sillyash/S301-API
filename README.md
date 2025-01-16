@@ -9,12 +9,6 @@
     │   ├── db.php
     │   └── send_email.php
     │
-    ├── config/
-    │   └── config.php
-    │
-    ├── public/
-    │   └── index.php
-    │
     ├── routes/
     │   ├── get_routes.php
     │   ├── post_routes.php
@@ -24,7 +18,8 @@
     ├── vendor/
     │   └── (composer dependencies)
     │
-    └── .htaccess
+    ├── config.php
+    ├── index.php
 
 ## TODO
 
