@@ -1,7 +1,7 @@
 <?php
 
 // Paths
-define('ROOT_PATH', realpath(dirname(__FILE__)));
+define('ROOT_PATH', realpath('../' . dirname(__FILE__)));
 
 // Database
 define('DB_HOST', 'localhost');
