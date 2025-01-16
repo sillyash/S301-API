@@ -24,8 +24,6 @@ function get_DevTest($uri) {
         "DB_NAME" => DB_NAME,
         "DB_USER" => DB_USER,
         "DB_PASS" => DB_PASS,
-        "EMAIL_FROM" => EMAIL_FROM,
-        "EMAIL_REPLY_TO" => EMAIL_REPLY_TO,
         "EMAIL_HEADERS" => EMAIL_HEADERS
     );
     

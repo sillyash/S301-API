@@ -11,8 +11,8 @@ if (!defined('DB_USER')) define('DB_USER', 'prj-mmorich');
 if (!defined('DB_PASS')) define('DB_PASS', 'vZnmFpECUAvJTwCf');
 
 // email settings
-if (!defined('EMAIL_FROM')) define('EMAIL_FROM', 'email@example.com');
-if (!defined('EMAIL_REPLY_TO')) define('EMAIL_REPLY_TO', 'replyto@example.com');
+if (!defined('EMAIL_FROM')) define('EMAIL_FROM', 'prj-mmorich@projets.iut-oray.fr');
+if (!defined('EMAIL_REPLY_TO')) define('EMAIL_REPLY_TO', 'noreply@projets.iut-oray.fr');
 if (!defined('EMAIL_HEADERS')) define('EMAIL_HEADERS', array(
     'From' => EMAIL_FROM,
     'Reply-To' => EMAIL_REPLY_TO,
