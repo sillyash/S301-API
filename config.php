@@ -2,6 +2,7 @@
 
 // paths
 if (!defined('ROOT_PATH')) define('ROOT_PATH', __DIR__);
+if (!defined('ROUTES_PATH')) define('ROUTES_PATH', ROOT_PATH . "/routes");
 if (!defined('API_ROUTE_INDEX')) define('API_ROUTE_INDEX', 3);
 
 // database settings
