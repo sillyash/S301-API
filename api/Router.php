@@ -36,7 +36,6 @@ class Router {
      */
     public static function dispatch(string $method, array $uri) {
         $method = strtoupper($method);
-        echo json_encode(static::$routes);
 
         if (!isset(static::$routes[$method][$uri])){
             header("HTTP/1.0 404 Not Found");
