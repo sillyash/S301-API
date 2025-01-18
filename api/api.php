@@ -15,7 +15,7 @@ Router::init();
 
 // Define routes
 Router::addRoute('GET', '/data/vin', function() use ($db) {
-    get_data();
+    get_data('vin');
 });
 
 Router::addRoute('GET', '/test/env', function() {
