@@ -1,7 +1,14 @@
 <?php
 require_once(__DIR__ . '/../config.php');
+$route_index = API_ROUTE_INDEX;
 
-switch ($uri[API_ROUTE_INDEX]) {
+try {
+    $request = $uri[$route_index];
+} catch (Exception $e) {
+    $request = null;
+}
+
+switch ($request) {
     case 'data':
         insert_data($db);
         break;

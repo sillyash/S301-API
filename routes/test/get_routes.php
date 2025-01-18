@@ -1,8 +1,13 @@
 <?php
-
 $route_index = API_ROUTE_INDEX+1;
 
-switch ($uri[$route_index]) {
+try {
+    $request = $uri[$route_index];
+} catch (Exception $e) {
+    $request = null;
+}
+
+switch ($request) {
     case 'data':
         get_data($db);
         break;
@@ -17,7 +22,6 @@ switch ($uri[$route_index]) {
 function get_DevTest($uri) {
     $response = array(
         "URI" => $_SERVER['REQUEST_URI'],
-        "URI2" => $uri,
         "REQUEST_METHOD" => $_SERVER['REQUEST_METHOD'],
         "ROOT_PATH" => ROOT_PATH,
         "PHP_VERSION" => phpversion(),
