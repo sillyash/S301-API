@@ -32,7 +32,7 @@ class Router {
      * Dispatch a route.
      *
      * @param string $method The HTTP method (e.g., GET, POST, PUT, DELETE).
-     * @param array $uri The URI to dispatch.
+     * @param string $uri The URI to dispatch.
      */
     public static function dispatch(string $method, string $uri) {
         $method = strtoupper($method);
