@@ -1,5 +1,17 @@
 <?php
 
+// development flag
+if (!defined('DEV')) define('DEV', true);
+
+// error reporting
+if (DEV) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+} else {
+    error_reporting(E_ERROR);
+    ini_set('display_errors', 0);
+}
+
 // paths
 if (!defined('ROOT_PATH')) define('ROOT_PATH', __DIR__);
 if (!defined('ROUTES_PATH')) define('ROUTES_PATH', ROOT_PATH . "/routes");
