@@ -2,21 +2,21 @@
 require_once(__DIR__ . '/../config.php');
 
 class Database {
-    private $host = DB_HOST;
-    private $db_name = DB_NAME;
-    private $username = DB_USER;
-    private $password = DB_PASS;
-    public $conn;
+    private static $host = DB_HOST;
+    private static $db_name = DB_NAME;
+    private static $username = DB_USER;
+    private static $password = DB_PASS;
+    public static $conn;
 
-    public function getConnection() {
-        $this->conn = null;
+
+    public static function createConnection() {
+        static::$conn = null;
         try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->exec("set names utf8");
+            static::$conn = new PDO("mysql:host=" . static::$host . ";dbname=" . static::$db_name, static::$username, static::$password);
+            static::$conn->exec("set names utf8");
         } catch(PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
         }
-        return $this->conn;
     }
 }
 
