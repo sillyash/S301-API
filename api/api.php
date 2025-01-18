@@ -14,7 +14,7 @@ Database::createConnection();
 Router::init();
 
 // Define routes
-Router::addRoute('GET', '/data/vin', function() use ($db) {
+Router::addRoute('GET', '/data/vin', function() {
     get_data('vin');
 });
 
