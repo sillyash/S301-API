@@ -34,12 +34,29 @@ class Router {
      * @param string $method The HTTP method (e.g., GET, POST, PUT, DELETE).
      * @param array $uri The URI to dispatch.
      */
-    public static function dispatch(string $method, array $uri) {
+    public static function dispatch(string $method, string $uri) {
         $method = strtoupper($method);
+        $uri = explode("/", $uri);
+        $uri = array_slice($uri, API_ROUTE_INDEX);
+        $uri = "/" . implode("/", $uri);
+
+        if ($uri == "/") {
+            header("HTTP/1.0 200 OK");
+            echo json_encode([
+                "message" => "Welcome to the API",
+                "method" => $method,
+                "routes" => static::$routes
+            ]);
+            return;
+        }
 
         if (!isset(static::$routes[$method][$uri])){
             header("HTTP/1.0 404 Not Found");
-            echo json_encode(["message" => "Route not found"]);
+            echo json_encode([
+                "message" => "Route not found : '$uri'",
+                "method" => $method,
+                "routes" => static::$routes
+            ]);
             return;
         }
 
