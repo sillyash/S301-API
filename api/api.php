@@ -13,14 +13,14 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $database = new Database();
 $db = $database->getConnection();
 
-$router = new Router();
+Router::init();
 
 // Define routes
-$router->addRoute('GET', '/data/vin', function() use ($db) {
+Router::addRoute('GET', '/data/vin', function() use ($db) {
     get_data($db);
 });
 
-$router->addRoute('GET', '/test/env', function() {
+Router::addRoute('GET', '/test/env', function() {
     get_env();
 });
 

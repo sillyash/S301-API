@@ -1,7 +1,7 @@
 <?php
 
 class Router {
-    public $routes = array();
+    public static $routes = array();
 
     public static function init() {
         header("Access-Control-Allow-Origin: *");
@@ -10,10 +10,10 @@ class Router {
         header("Access-Control-Max-Age: 3600");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-        $routes["GET"] = array();
-        $routes["POST"] = array();
-        $routes["PUT"] = array();
-        $routes["DELETE"] = array();
+        static::$routes["GET"] = array();
+        static::$routes["POST"] = array();
+        static::$routes["PUT"] = array();
+        static::$routes["DELETE"] = array();
     }
 
     /**
@@ -23,9 +23,9 @@ class Router {
      * @param string $path The path for the route.
      * @param callable $callback The callback function to handle the route.
      */
-    public function addRoute(string $method, string $path, callable $callback) {
+    public static function addRoute(string $method, string $path, callable $callback) {
         $method = strtoupper($method);
-        $this->routes[$method][$path] = $callback;
+        static::$routes[$method][$path] = $callback;
     }
 
     /**
@@ -34,16 +34,17 @@ class Router {
      * @param string $method The HTTP method (e.g., GET, POST, PUT, DELETE).
      * @param array $uri The URI to dispatch.
      */
-    public function dispatch(string $method, array $uri) {
+    public static function dispatch(string $method, array $uri) {
         $method = strtoupper($method);
+        echo json_encode(static::$routes);
 
-        if (!isset($this->routes[$method][$uri])){
+        if (!isset(static::$routes[$method][$uri])){
             header("HTTP/1.0 404 Not Found");
             echo json_encode(["message" => "Route not found"]);
             return;
         }
 
-        call_user_func($this->routes[$method][$uri]);
+        call_user_func(static::$routes[$method][$uri]);
     }
 }
 

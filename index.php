@@ -7,7 +7,6 @@ $uri = explode('/', $uri);
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 
-$router::init();
 $router->dispatch($request_method, $uri);
 
 ?>
