@@ -15,7 +15,7 @@ Router::init();
 
 // Define routes
 Router::addRoute('GET', '/data/vin', function() use ($db) {
-    get_data($db);
+    get_data();
 });
 
 Router::addRoute('GET', '/test/env', function() {
@@ -49,7 +49,7 @@ function get_data(string $table, int $rows = null) {
     $stmt = $db->prepare($query);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     echo json_encode($data);
 }
 
