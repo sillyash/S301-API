@@ -16,7 +16,11 @@ class Proposition extends Modele {
      * @param int $idProposition L'identifiant de la proposition (optionnel)
      * @return void
      */
-    public function __construct(string $titre, string $description, int $idProposition = -1) {
+    public function __construct(
+        string $titre,
+        string $description,
+        int $idProposition = null
+    ) {
         if ($idProposition !== -1) {
             $this->idProposition = $idProposition;
         }
