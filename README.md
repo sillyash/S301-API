@@ -8,8 +8,26 @@ root/
 ├── api/
 │   ├── api.php
 │   ├── db.php
+│   ├── delete_routes.php
+│   ├── get_routes.php
+│   ├── post_routes.php
+│   ├── put_routes.php
 │   ├── Router.php
-│   └── send_email.php
+│
+├── models/
+│   ├── Budget.php
+│   ├── Commentaire.php
+│   ├── Groupe.php
+│   ├── Internaute.php
+│   ├── Membre.php
+│   ├── Modele.php
+│   ├── Notification.php
+│   ├── Proposition.php
+│   ├── Reaction.php
+│   ├── Role.php
+│   ├── Scrutin.php
+│   ├── Signalement.php
+│   ├── Theme.php
 │
 ├── .htaccess
 ├── api.sh
@@ -27,29 +45,9 @@ The routes are defined in the [api.php](./api/api.php) file.
 
 The routes are all displayed in the [index page](https://projets.iut-orsay.fr/prj-mmorich/S301-API).
 
-#### GET
+See all the routes [here](./ROUTES.md).
 
-- `/` : returns the list of all the routes
-- `/test/env` : returns the environment variables and PHP constants (useful for debugging)
-- `/data` : returns data from the database
-  - `?table=vin` : returns the data from the table `Vin`
-  - `?rows=10` : returns the 10 first rows (optional)
-
-#### POST
-
-
-
-#### PUT
-
-
-
-#### DELETE
-
-
-
-
-
-## Automatic requests routing
+### Automatic requests routing
 
 The routing is done with the [Router class](./api/Router.php) : it stores all the possible requests in an array and the function to call for each request.
 
