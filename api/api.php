@@ -14,8 +14,15 @@ Database::createConnection();
 Router::init();
 
 // Define routes
-Router::addRoute('GET', '/data/vin', function() {
-    get_data('vin');
+Router::addRoute('GET', '/data', function() {
+    if (!isset($_GET['table'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Table parameter is required"]);
+        return;
+    }
+    $table = $_GET['table'];
+    $rows = isset($_GET['rows']) ? intval($_GET['rows']) : null;
+    get_data($table, $rows);
 });
 
 Router::addRoute('GET', '/test/env', function() {
@@ -44,11 +51,11 @@ function get_data(string $table, int $rows = null) {
     $db = Database::$conn;
 
     if ($rows) {
-        $query = "SELECT * FROM " . $db->quote($table) . " LIMIT :rows";
+        $query = "SELECT * FROM `$table` LIMIT :rows";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
     } else {
-        $query = "SELECT * FROM " . $db->quote($table);
+        $query = "SELECT * FROM `$table`";
         $stmt = $db->prepare($query);
     }
     
