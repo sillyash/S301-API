@@ -1,23 +1,21 @@
 <?php
 
-class Modele {
+abstract class Modele {
     private static $cle;
     private static $table;
+
+    /**
+    * This function is used to push an object to the database.
+    * @return bool The result of the push.
+    */
+    abstract public function pushToDb();
 
     public static function getCle() {
         return static::$cle;
     }
 
-    public static function setCle($cle) {
-        static::$cle = $cle;
-    }
-
     public static function getTable() {
         return static::$table;
-    }
-
-    public static function setTable($table) {
-        static::$table = $table;
     }
 
     public function get(string $attr) {
