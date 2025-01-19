@@ -8,10 +8,6 @@
 */
 
 Router::addRoute('GET', '/test/env', function() {
-    get_env();
-});
-
-function get_env() {
     $response = array(
         "URI" => $_SERVER['REQUEST_URI'],
         "REQUEST_METHOD" => $_SERVER['REQUEST_METHOD'],
@@ -25,7 +21,7 @@ function get_env() {
     );
     
     echo json_encode($response);
-}
+});
 
 /*
 * Route: /data
@@ -46,25 +42,5 @@ Router::addRoute('GET', '/data', function() {
     $rows = isset($_GET['rows']) ? intval($_GET['rows']) : null;
     get_data($table, $rows);
 });
-
-function get_data(string $table, int $rows = null) {
-    $table = strtolower($table);
-    $table = ucfirst($table);
-    $db = Database::$conn;
-
-    if ($rows) {
-        $query = "SELECT * FROM `$table` LIMIT :rows";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
-    } else {
-        $query = "SELECT * FROM `$table`";
-        $stmt = $db->prepare($query);
-    }
-    
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    echo json_encode($data);
-}
 
 ?>
