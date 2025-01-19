@@ -15,9 +15,6 @@
     │   ├── put_routes.php
     │   └── delete_routes.php
     │
-    ├── vendor/
-    │   └── (composer dependencies)
-    │
     ├── config.php
     ├── index.php
 
