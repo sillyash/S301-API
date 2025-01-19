@@ -45,7 +45,7 @@ The routes are defined in the [api.php](./api/api.php) file.
 
 The routes are all displayed in the [index page](https://projets.iut-orsay.fr/prj-mmorich/S301-API).
 
-See all the routes [here](./ROUTES.md).
+#### See all the routes [here](./ROUTES.md).
 
 ### Automatic requests routing
 
