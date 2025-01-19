@@ -12,7 +12,7 @@ root/
 │   ├── get_routes.php
 │   ├── post_routes.php
 │   ├── put_routes.php
-│   ├── Router.php
+│   └── Router.php
 │
 ├── models/
 │   ├── Budget.php
@@ -27,7 +27,7 @@ root/
 │   ├── Role.php
 │   ├── Scrutin.php
 │   ├── Signalement.php
-│   ├── Theme.php
+│   └── Theme.php
 │
 ├── .htaccess
 ├── api.sh
