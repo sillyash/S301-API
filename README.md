@@ -61,8 +61,3 @@ The router then dispatchs the route, or returns a 404 error, depending if the ro
 ## Database connection
 
 The connection and PDO management is done through the [Database class](./api/db.php).
-
-
-## Sending emails
-
-The email sending is done through the [send_email](./api/send_email.php) function, which uses the PHP `mail` function.
