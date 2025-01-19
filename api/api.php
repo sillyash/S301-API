@@ -43,10 +43,15 @@ function get_data(string $table, int $rows = null) {
     $table = ucfirst($table);
     $db = Database::$conn;
 
-    if ($rows) $query = "SELECT * FROM $table LIMIT $rows";
-    else $query = "SELECT * FROM $table";
-
-    $stmt = $db->prepare($query);
+    if ($rows) {
+        $query = "SELECT * FROM " . $db->quote($table) . " LIMIT :rows";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
+    } else {
+        $query = "SELECT * FROM " . $db->quote($table);
+        $stmt = $db->prepare($query);
+    }
+    
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
