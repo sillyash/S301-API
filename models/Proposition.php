@@ -2,14 +2,14 @@
 require_once 'Modele.php';
 
 class Proposition extends Modele {
-    protected static $cle = 'idProposition';
-    protected static $table = 'Proposition';
+    private static $cle = 'idProposition';
+    private static $table = 'Proposition';
 
-    protected int $idProposition;
-    protected string $titre;
-    protected string $description;
-    protected string $dateProp;
-    protected int $idBudget;
+    public int $idProposition;
+    public string $titre;
+    public string $description;
+    public string $dateProp;
+    public int $idBudget;
 
     /**
      * Constructeur de la classe Proposition

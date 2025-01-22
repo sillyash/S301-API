@@ -5,8 +5,8 @@ class Groupe extends Modele {
     private static $cle = 'idGroupe';
     private static $table = 'Groupe';
 
-    protected int $idGroupe;
-    protected string $nomGroupe;
+    public int $idGroupe;
+    public string $nomGroupe;
 
     public function __construct(
         string $nomGroupe,

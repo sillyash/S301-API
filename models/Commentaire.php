@@ -5,11 +5,11 @@ class Commentaire extends Modele {
     private static $cle = 'idCommentaire';
     private static $table = 'Commentaire';
 
-    protected int $idCommentaire;
-    protected string $descCommentaire;
-    protected string $dateCommentaire;
-    protected int $idMembre;
-    protected int $idProposition;
+    public int $idCommentaire;
+    public string $descCommentaire;
+    public string $dateCommentaire;
+    public int $idMembre;
+    public int $idProposition;
 
     /**
      * Constructeur de la classe Commentaire

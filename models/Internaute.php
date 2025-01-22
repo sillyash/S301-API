@@ -5,12 +5,12 @@ class Internaute extends Modele {
     private static $cle = 'idInternaute';
     private static $table = 'Internaute';
 
-    protected int $idInternaute;
-    protected string $nomInter;
-    protected string $prenomInter;
-    protected string $emailInter;
-    protected string $loginInter;
-    protected string $mdpInter;
+    public int $idInternaute;
+    public string $nomInter;
+    public string $prenomInter;
+    public string $emailInter;
+    public string $loginInter;
+    public string $mdpInter;
 
     public function __construct(
         string $nomInter,
