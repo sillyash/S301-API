@@ -1,5 +1,13 @@
 # S301-API
 
+## TODO
+
+- [ ] Redo project structure
+- [ ] Make routes in markdown
+- [ ] Make diff error for method not allowed and missing arguments
+- [ ] Test mail
+- [ ] Test POST
+
 ## Project tree
 
 ```
