@@ -1,11 +1,5 @@
 <?php
-
 /* This file is used to define routes for GET requests. */
-
-/*
-* Route: /test/env
-* This route is used to test the environment of the API.
-*/
 
 Router::addRoute('GET', '/test/env', function() {
     $response = array(
@@ -23,16 +17,7 @@ Router::addRoute('GET', '/test/env', function() {
     echo json_encode($response);
 });
 
-/*
-* Route: /data
-* This route is used to get data from a table in the database.
-* Required parameters:
-* - table: The name of the table to get data from.
-* Optional parameters:
-* - rows: The number of rows to get from the table.
-*/
-
-Router::addRoute('GET', '/data', function() {
+Router::addRoute('GET', '/table', function() {
     if (!isset($_GET['table'])) {
         http_response_code(400);
         echo json_encode(["error" => "Table parameter is required"]);
