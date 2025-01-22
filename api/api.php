@@ -112,8 +112,13 @@ function get_data(string $table, int $rows = null) {
         $stmt = $db->prepare($query);
     }
     
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        sqlError($e->getMessage(), $table);
+        return;
+    }
 
     echo json_encode($data);
 }
