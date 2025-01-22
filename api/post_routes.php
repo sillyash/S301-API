@@ -5,10 +5,10 @@ Router::addRoute('POST', '/proposition', function() {
     require_once(ROOT_PATH . '/models/Proposition.php');
 
     $data = json_decode(file_get_contents("php://input"));
-    $titre = $data->titre;
-    $description = $data->description;
+    $titre = isset($data->titre) ? $data->titre : null;
+    $description = isset($data->description) ? $data->description : null;
 
-    if (empty($titre) || empty($description)) {
+    if (!$titre || !$description) {
         fieldsIncomplete($data);
         return;
     }

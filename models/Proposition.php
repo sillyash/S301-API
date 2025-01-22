@@ -21,7 +21,7 @@ class Proposition extends Modele {
         string $description,
         int $idProposition = null
     ) {
-        if ($idProposition !== -1) {
+        if ($idProposition) {
             $this->idProposition = $idProposition;
         }
         $this->titre = $titre;
