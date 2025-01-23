@@ -11,29 +11,29 @@ class Internaute extends Modele {
     public string $emailInter;
     public string $loginInter;
     public string $mdpInter;
+    public string $adrInter;
 
     public function __construct(
+        string $loginInter,
         string $nomInter,
         string $prenomInter,
         string $emailInter,
-        string $loginInter,
         string $mdpInter,
-        int $idInternaute = null
+        string $adrInter = null
     ) {
-        if ($idInternaute) {
-            $this->idInternaute = $idInternaute;
-        }
+        $this->loginInter = $loginInter;
         $this->nomInter = $nomInter;
         $this->prenomInter = $prenomInter;
         $this->emailInter = $emailInter;
         $this->loginInter = $loginInter;
         $this->mdpInter = $mdpInter;
+        if ($adrInter) $this->adrInter = $adrInter;
     }
 
     public function pushToDb() {
         $db = Database::$conn;
-        $query = "INSERT INTO ".static::$table." (nomInter, prenomInter, emailInter, loginInter, mdpInter)"
-        ." VALUES (:nomInter, :prenomInter, :emailInter, :loginInter, :mdpInter)";
+        $query = "INSERT INTO ".static::$table." (nomInter, prenomInter, emailInter, loginInter, mdpInter, adrInter)"
+        ." VALUES (:nomInter, :prenomInter, :emailInter, :loginInter, :mdpInter, :adrInter)";
 
         $stmt = $db->prepare($query);
         $stmt->bindParam(':nomInter', $this->nomInter, PDO::PARAM_STR);
@@ -41,6 +41,7 @@ class Internaute extends Modele {
         $stmt->bindParam(':emailInter', $this->emailInter, PDO::PARAM_STR);
         $stmt->bindParam(':loginInter', $this->loginInter, PDO::PARAM_STR);
         $stmt->bindParam(':mdpInter', $this->mdpInter, PDO::PARAM_STR);
+        $stmt->bindParam(':adrInter', $this->adrInter);
         $stmt->execute();
         return true;
     }

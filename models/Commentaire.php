@@ -8,7 +8,7 @@ class Commentaire extends Modele {
     public int $idCommentaire;
     public string $descCommentaire;
     public string $dateCommentaire;
-    public int $idMembre;
+    public string $loginInter;
     public int $idProposition;
 
     /**
@@ -16,25 +16,19 @@ class Commentaire extends Modele {
      * @param int $idMembre
      * @param int $idProposition
      * @param string $descCommentaire
-     * @param string $dateCommentaire
-     * @param int $idCommentaire
+     * @param DateTime $dateCommentaire (optionnel)
+     * @param int $idCommentaire (optionnel)
      * @return void
      */
     public function __construct(
         int $idMembre,
         int $idProposition,
         string $descCommentaire,
-        string $dateCommentaire = null,
+        DateTime $dateCommentaire = null,
         int $idCommentaire = null
     ) {
-        if ($idCommentaire !== null) {
-            $this->idCommentaire = $idCommentaire;
-        }
-
-        if ($dateCommentaire === null) {
-            $dateCommentaire = date('Y-m-d H:i:s');
-        }
-
+        if ($idCommentaire) $this->idCommentaire = $idCommentaire;
+        if ($dateCommentaire) $this->dateCommentaire = $dateCommentaire;
         $this->idMembre = $idMembre;
         $this->idProposition = $idProposition;
         $this->descCommentaire = $descCommentaire;

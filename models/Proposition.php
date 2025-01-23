@@ -8,6 +8,7 @@ class Proposition extends Modele {
     public int $idProposition;
     public string $titre;
     public string $description;
+    public int $popularite;
     public string $dateProp;
     public int $idBudget;
 
@@ -15,13 +16,17 @@ class Proposition extends Modele {
      * Constructeur de la classe Proposition
      * @param string $titre Le titre de la proposition
      * @param string $description La description de la proposition
+     * @param int $idBudget L'identifiant du budget de la proposition
+     * @param int $popularite La popularité de la proposition (optionnel)
      * @param int $idProposition L'identifiant de la proposition (optionnel)
+     * @param int $dateProp La date de la porposition (optionnel)
      * @return void
      */
     public function __construct(
         string $titre,
         string $description,
         int $idBudget,
+        int $popularite = 0,
         int $idProposition = null,
         DateTime $dateProp = null
     ) {
