@@ -2,8 +2,9 @@
 require_once 'Modele.php';
 
 class A_pour_reaction extends Modele {
-    private static $cle = ['idProposition', 'idReaction'];
-    private static $table = 'A_pour_reaction';
+  private static string $table = 'A_pour_reaction';
+  private static array $cle = ['idProposition', 'idReaction'];
+  private static array $requiredAttributes = ['idProposition', 'idReaction'];
 
     public int $idProposition;
     public int $idReaction;

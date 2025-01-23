@@ -2,8 +2,8 @@
 require_once 'Modele.php';
 
 class Theme extends Modele {
-    private static $cle = 'idTheme';
-    private static $table = 'Theme';
+    private static string $table = 'Theme';
+    private static array $cle = ['idTheme'];
 
     public int $idTheme;
     public string $nomTheme;

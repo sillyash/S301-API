@@ -2,8 +2,9 @@
 require_once 'Modele.php';
 
 class A_pour_theme extends Modele {
-    private static $cle = ['idProposition', 'idTheme'];
-    private static $table = 'A_pour_theme';
+  private static string $table = 'A_pour_theme';
+  private static array $cle = ['idProposition', 'idTheme'];
+  private static array $requiredAttributes = ['idProposition', 'idReaction'];
 
     public int $idProposition;
     public int $idTheme;

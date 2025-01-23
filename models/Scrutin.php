@@ -2,8 +2,14 @@
 require_once 'Modele.php';
 
 class Scrutin extends Modele {
-    private static $cle = 'idScrutin';
-    private static $table = 'Scrutin';
+    private static string $table = 'Scrutin';
+    private static array $cle = ['idScrutin'];
+    private static array $requiredAttributes = [
+        'dureeDiscussion',
+        'dureeScrutin',
+        'natureScrutin',
+        'idProposition'
+    ];
 
     public int $idScrutin;
     public int $dureeDiscussion;
@@ -16,15 +22,15 @@ class Scrutin extends Modele {
         int $dureeDiscussion,
         int $dureeScrutin,
         string $natureScrutin,
-        string $resultatScrutin,
         int $idProposition,
+        string $resultatScrutin = null,
         int $idScrutin = null
     ) {
         if ($idScrutin) $this->idScrutin = $idScrutin;
+        if ($resultatScrutin) $this->resultatScrutin = $resultatScrutin;
         $this->dureeDiscussion = $dureeDiscussion;
         $this->dureeScrutin = $dureeScrutin;
         $this->natureScrutin = $natureScrutin;
-        $this->resultatScrutin = $resultatScrutin;
         $this->idProposition = $idProposition;
     }
 

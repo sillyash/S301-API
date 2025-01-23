@@ -2,8 +2,14 @@
 require_once 'Modele.php';
 
 class Commentaire extends Modele {
-    private static $cle = 'idCommentaire';
-    private static $table = 'Commentaire';
+    private static string $table = 'Commentaire';
+    private static array $cle = ['idCommentaire'];
+    private static array $requiredAttributes = [
+        'descCommentaire',
+        'dateCommentaire',
+        'loginInter',
+        'idProposition'
+    ];
 
     public int $idCommentaire;
     public string $descCommentaire;

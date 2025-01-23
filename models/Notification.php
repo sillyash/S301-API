@@ -2,8 +2,12 @@
 require_once 'Modele.php';
 
 class Notification extends Modele {
-    private static $cle = 'idNotification';
-    private static $table = 'Notification';
+    private static string $table = 'Notification';
+    private static array $cle = ['idNotification'];
+    private static array $requiredAttributes = [
+        'typeNotification',
+        'messageNotification'
+    ];
 
     public int $idNotification;
     public string $typeNotification;
@@ -14,15 +18,15 @@ class Notification extends Modele {
     public function __construct(
         string $typeNotification,
         string $messageNotification,
-        string $etatNotification,
-        string $frequenceNotification,
+        string $etatNotification = null,
+        string $frequenceNotification = null,
         int $idNotification = null
     ) {
         if ($idNotification) $this->idNotification = $idNotification;
         $this->typeNotification = $typeNotification;
         $this->messageNotification = $messageNotification;
-        $this->etatNotification = $etatNotification;
-        $this->frequenceNotification = $frequenceNotification;
+        if ($etatNotification) $this->etatNotification = $etatNotification;
+        if ($frequenceNotification) $this->frequenceNotification = $frequenceNotification;
     }
 
     public function pushToDb() {

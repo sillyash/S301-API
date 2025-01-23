@@ -2,8 +2,13 @@
 require_once 'Modele.php';
 
 class Signalement extends Modele {
-    private static $cle = 'idSignalement';
-    private static $table = 'Signalement';
+    private static string $table = 'Signalement';
+    private static array $cle = ['idSignalement'];
+    private static array $requiredAttributes = [
+        'loginInter',
+        'idProposition',
+        'idCommentaire'
+    ];
 
     public int $idSignalement;
     public int $nbSignalements;
@@ -12,14 +17,14 @@ class Signalement extends Modele {
     public int $idCommentaire;
 
     public function __construct(
-        int $nbSignalements,
         string $loginInter,
         int $idProposition,
         int $idCommentaire,
+        int $nbSignalements = 0,
         int $idSignalement = null
     ) {
         if ($idSignalement) $this->idSignalement = $idSignalement;
-        $this->nbSignalements = $nbSignalements;
+        if ($nbSignalements) $this->nbSignalements = $nbSignalements;
         $this->loginInter = $loginInter;
         $this->idProposition = $idProposition;
         $this->idCommentaire = $idCommentaire;

@@ -2,8 +2,9 @@
 require_once 'Modele.php';
 
 class Concerne_la_notification extends Modele {
-    private static $cle = ['idProposition', 'idNotification'];
-    private static $table = 'Concerne_la_notification';
+  private static string $table = 'Concerne_la_notification';
+  private static array $cle = ['idProposition', 'idNotification'];
+  private static array $requiredAttributes = ['idProposition', 'idNotification'];
 
     public int $idProposition;
     public int $idNotification;

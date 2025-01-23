@@ -2,8 +2,9 @@
 require_once 'Modele.php';
 
 class Groupe extends Modele {
-    private static $cle = 'idGroupe';
-    private static $table = 'Groupe';
+    private static array $cle = ['idGroupe'];
+    private static string $table = 'Groupe';
+    private static array $requiredAttributes = ['nomGroupe'];
 
     public int $idGroupe;
     public string $nomGroupe;

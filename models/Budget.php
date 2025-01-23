@@ -2,8 +2,9 @@
 require_once 'Modele.php';
 
 class Budget extends Modele {
-    private static $cle = 'idBudget';
-    private static $table = 'Budget';
+    private static string $table = 'Budget';
+    private static array $cle = ['idBudget'];
+    private static array $requiredAttributes = ['limiteBudgetGlobal'];
 
     public int $idBudget;
     public int $limiteBudgetGlobal;
