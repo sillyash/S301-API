@@ -41,7 +41,7 @@ class Internaute extends Modele {
         $stmt->bindParam(':emailInter', $this->emailInter, PDO::PARAM_STR);
         $stmt->bindParam(':loginInter', $this->loginInter, PDO::PARAM_STR);
         $stmt->bindParam(':mdpInter', $this->mdpInter, PDO::PARAM_STR);
-        $stmt->bindParam(':adrInter', $this->adrInter);
+        $stmt->bindParam(':adrInter', $this->adrInter, PDO::PARAM_STR);
         $stmt->execute();
         return true;
     }
