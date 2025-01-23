@@ -2,10 +2,9 @@
 require_once 'Modele.php';
 
 class Internaute extends Modele {
-    private static $cle = 'idInternaute';
+    private static $cle = 'loginInter';
     private static $table = 'Internaute';
 
-    public int $idInternaute;
     public string $nomInter;
     public string $prenomInter;
     public string $emailInter;
