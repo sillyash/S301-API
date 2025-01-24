@@ -48,13 +48,71 @@ abstract class Modele {
             creationSuccess($classInstance);
         });
     }
-    
 
+    
     /**
-    * This function is used to push an object to the database.
+    * This function is used to push a Model to the database.
     * @return bool The result of the push.
     */
-    abstract public function pushToDb();
+    public static function pushToDb() {
+        $db = Database::$conn;
+
+        $attrList = "";
+        $argsList = "";
+
+        /* 
+         * attrList : (arg1, arg2, arg3)
+         * argsList : (:arg1, :arg2, :arg3)
+        */
+        foreach (static::$requiredAttributes as $attr) {
+            if ($attrList = "") {
+                $attrList = "($attr";
+                $argsList = "(:$attr";
+            } else {
+                $attrList = "$attrList, $attr";
+                $argsList = "$argsList, :$attr";
+            }
+        }
+        
+        $attrList = $attrList . ")";
+        $argsList = $argsList . ")";
+        
+        echo $attrList;
+        echo '\n';
+        echo $argsList;
+
+        $query = "INSERT INTO " . static::$table . $attrList . " VALUES " . $argsList;
+        $stmt = $db->prepare($query);
+
+        foreach ($requiredAttributes as $attr) {
+            $val = $this->get($attr);
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindParam(":$attr", $val, $PDOtype);
+        }
+        
+        $stmt->execute();
+        return true;
+    }
+
+
+    public static function getPDOtype(mixed $var) {
+        switch ($var) {
+            case is_int($var):
+                $PDOtype = PDO::PARAM_INT;
+                break;
+            case is_bool($var):
+                $PDOtype = PDO::PARAM_BOOL;
+                break;
+            case is_null($var):
+                $PDOtype = PDO::PARAM_NULL;
+                break;
+            default:
+                $PDOtype = PDO::PARAM_STR;
+                break;
+        }
+
+        return $PDOtype;
+    }
 
     public static function getCle() { return static::$cle; }
     public static function getTable() { return static::$table; }
