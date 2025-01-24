@@ -22,7 +22,7 @@ abstract class Modele {
                 if (!isset($this->$k))
                     throw new ArgumentCountError("Key value $attr not set.");
         }
-        
+                
         // Check required attributes (NOT NULL in DB)
         if ($flag == CONSTRUCT_POST)
             foreach (static::$requiredAttributes as $req) {
@@ -172,7 +172,7 @@ abstract class Modele {
     * This function is used to update a Model on the database.
     * @return bool The result of the update .
     */
-    public function updateToDb(array $updates) {
+    public function updateToDb() {
         $db = Database::$conn;
         $keyList = "";
 
@@ -187,7 +187,7 @@ abstract class Modele {
 
         $argsList = "";
         // argsList : arg1 = :arg1, arg2 = :arg2
-        foreach ($updates as $attr => $val) {
+        foreach (static::$requiredAttributes as $attr) {
             if ($argsList == "") {
                 $argsList = "$attr = :$attr";
             } else {
@@ -209,8 +209,9 @@ abstract class Modele {
             $stmt->bindParam(":$attr", $val, $PDOtype);
         }
 
-        // Insertion des valeurs à update
-        foreach ($updates as $attr => $val) {
+        // Insertion des valeurs à update (on les met toutes au cas où)
+        foreach (static::$requiredAttributes as $attr) {
+            $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindParam(":$attr", $val, $PDOtype);
         }
