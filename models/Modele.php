@@ -29,7 +29,7 @@ abstract class Modele {
 
         Router::addRoute('POST', "/$className", function()
         {
-            $data = json_decode(file_get_contents("php://input"));
+            $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
     
             try {
                 $classInstance = new static::$table($data);
@@ -49,6 +49,37 @@ abstract class Modele {
         });
     }
 
+
+    public static function handleDeleteRequest() {
+        $className = static::$table;
+        require_once($className . ".php");
+
+        if (!class_exists($className)) {
+            throw new Exception("Class '$className' does not exist.");
+            return;
+        }
+
+        Router::addRoute('DELETE', "/$className", function()
+        {
+            $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
+    
+            try {
+                $classInstance = new static::$table($data);
+            } catch (Throwable $e) {
+                objectCreateError($e->getMessage(), $data);
+                return;
+            }
+    
+            try {
+                $classInstance->deleteFromDb();
+            } catch (Throwable $e) {
+                sqlError($e->getMessage(), $classInstance);
+                return;
+            }
+    
+            deletionSuccess($classInstance);
+        });
+    }
     
     /**
     * This function is used to push a Model to the database.
