@@ -189,14 +189,16 @@ abstract class Modele {
         // argsList : arg1 = :arg1, arg2 = :arg2
         foreach (static::$requiredAttributes as $attr) {
             if ($argsList == "") {
-                $argsList = "$attr = :$attr";
+                $argsList = $attr . " = :" . $attr;
             } else {
-                $argsList = $argsList . ", $attr = :$attr";
+                $argsList = $argsList . ", " . $attr . " = :" . $attr;
             }
         }
 
         $query = "UPDATE " . static::$table . " SET " . $argsList . " WHERE " . $keyList;
         $stmt = $db->prepare($query);
+
+        echo $query;
 
         // Insertion des clés
         foreach (static::$cle as $attr) {
