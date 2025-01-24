@@ -9,14 +9,6 @@ class Propose extends Modele {
     public int $idProposition;
     public string $loginInter;
 
-    public function __construct(
-        int $idProposition,
-        string $loginInter
-    ) {
-        $this->idProposition = $idProposition;
-        $this->loginInter = $loginInter;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

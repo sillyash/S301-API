@@ -8,14 +8,6 @@ class Reagit extends Modele {
     public string $loginInter;
     public int $idReaction;
 
-    public function __construct(
-        string $loginInter,
-        int $idReaction
-    ) {
-        $this->loginInter = $loginInter;
-        $this->idReaction = $idReaction;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

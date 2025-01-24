@@ -15,20 +15,6 @@ class Notification extends Modele {
     public string $etatNotification;
     public string $frequenceNotification;
 
-    public function __construct(
-        string $typeNotification,
-        string $messageNotification,
-        string $etatNotification = null,
-        string $frequenceNotification = null,
-        int $idNotification = null
-    ) {
-        if ($idNotification) $this->idNotification = $idNotification;
-        $this->typeNotification = $typeNotification;
-        $this->messageNotification = $messageNotification;
-        if ($etatNotification) $this->etatNotification = $etatNotification;
-        if ($frequenceNotification) $this->frequenceNotification = $frequenceNotification;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
         $query = "INSERT INTO ".static::$table." (typeNotification, messageNotification, etatNotification, frequenceNotification)"

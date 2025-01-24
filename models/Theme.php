@@ -9,16 +9,6 @@ class Theme extends Modele {
     public string $nomTheme;
     public int $idGroupe;
 
-    public function __construct(
-        string $nomTheme,
-        int $idGroupe,
-        int $idTheme = null
-    ) {
-        if ($idTheme) $this->idTheme = $idTheme;
-        $this->nomTheme = $nomTheme;
-        $this->idGroupe = $idGroupe;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

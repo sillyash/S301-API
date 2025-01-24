@@ -9,14 +9,6 @@ class Concerne_la_notification extends Modele {
     public int $idProposition;
     public int $idNotification;
 
-    public function __construct(
-        int $idProposition,
-        int $idNotification
-    ) {
-        $this->idProposition = $idProposition;
-        $this->idNotification = $idNotification;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

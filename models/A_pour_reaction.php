@@ -9,14 +9,6 @@ class A_pour_reaction extends Modele {
     public int $idProposition;
     public int $idReaction;
 
-    public function __construct(
-        int $idProposition,
-        int $idReaction
-    ) {
-        $this->idProposition = $idProposition;
-        $this->idReaction = $idReaction;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

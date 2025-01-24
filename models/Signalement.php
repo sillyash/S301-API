@@ -16,20 +16,6 @@ class Signalement extends Modele {
     public int $idProposition;
     public int $idCommentaire;
 
-    public function __construct(
-        string $loginInter,
-        int $idProposition,
-        int $idCommentaire,
-        int $nbSignalements = 0,
-        int $idSignalement = null
-    ) {
-        if ($idSignalement) $this->idSignalement = $idSignalement;
-        if ($nbSignalements) $this->nbSignalements = $nbSignalements;
-        $this->loginInter = $loginInter;
-        $this->idProposition = $idProposition;
-        $this->idCommentaire = $idCommentaire;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
         $query = "INSERT INTO ".static::$table." (nbSignalements, loginInter, idProposition, idCommentaire)"

@@ -9,14 +9,6 @@ class A_pour_theme extends Modele {
     public int $idProposition;
     public int $idTheme;
 
-    public function __construct(
-        int $idProposition,
-        int $idTheme
-    ) {
-        $this->idProposition = $idProposition;
-        $this->idTheme = $idTheme;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

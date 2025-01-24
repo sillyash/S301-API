@@ -9,14 +9,6 @@ class Budget extends Modele {
     public int $idBudget;
     public int $limiteBudgetGlobal;
 
-    public function __construct(
-        int $limiteBudgetGlobal,
-        int $idBudget = null
-    ) {
-        if ($idBudget) $this->idBudget = $idBudget;
-        $this->limiteBudgetGlobal = $limiteBudgetGlobal;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

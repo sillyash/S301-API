@@ -8,14 +8,6 @@ class Vote extends Modele {
     public string $loginInter;
     public int $idScrutin;
 
-    public function __construct(
-        string $loginInter,
-        int $idScrutin
-    ) {
-        $this->loginInter = $loginInter;
-        $this->idScrutin = $idScrutin;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

@@ -10,16 +10,6 @@ class Fait_partie_de extends Modele {
     public string $loginInter;
     public int $idRole;
 
-    public function __construct(
-        int $idGroupe,
-        string $loginInter,
-        int $idRole
-    ) {
-        $this->idProposition = $idProposition;
-        $this->loginInter = $loginInter;
-        $this->idRole = $idRole;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

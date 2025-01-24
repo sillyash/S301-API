@@ -5,6 +5,18 @@ abstract class Modele {
     protected static array $cle;
     protected static array $requiredAttributes;
 
+    public function __construct(array | object $attrs) {
+        if (is_null($attrs)) throw new ArgumentCountError();
+
+        foreach ($attrs as $attr => $value) {
+            $this->set($attr, $value);
+        }
+
+        foreach (static::$requiredAttributes as $req) {
+            if (!isset($this->$req)) throw new ArgumentCountError();
+        }
+    }
+
     /**
     * This function is used to push an object to the database.
     * @return bool The result of the push.

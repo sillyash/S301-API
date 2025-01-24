@@ -8,14 +8,6 @@ class Reaction extends Modele {
     public int $idReaction;
     public int $typeReaction;
 
-    public function __construct(
-        int $typeReaction,
-        int $idReaction = null
-    ) {
-        if ($idReaction) $this->idReaction = $idReaction;
-        $this->typeReaction = $typeReaction;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

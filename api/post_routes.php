@@ -3,19 +3,10 @@
 
 Router::addRoute('POST', '/proposition', function() {
     require_once(ROOT_PATH . '/models/Proposition.php');
-
     $data = json_decode(file_get_contents("php://input"));
-    $titre = isset($data->titre) ? $data->titre : null;
-    $description = isset($data->description) ? $data->description : null;
-    $idBudget = isset($data->idBudget) ? $data->idBudget : null;
-
-    if (!$titre || !$description) {
-        fieldsIncomplete($data);
-        return;
-    }
 
     try {
-        $proposition = new Proposition($titre, $description, $idBudget);
+        $proposition = new Proposition($data);
     } catch (Exception $e) {
         objectCreateError($e->getMessage(), $data);
         return;

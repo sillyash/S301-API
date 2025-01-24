@@ -18,22 +18,6 @@ class Scrutin extends Modele {
     public string $resultatScrutin;
     public int $idProposition;
 
-    public function __construct(
-        int $dureeDiscussion,
-        int $dureeScrutin,
-        string $natureScrutin,
-        int $idProposition,
-        string $resultatScrutin = null,
-        int $idScrutin = null
-    ) {
-        if ($idScrutin) $this->idScrutin = $idScrutin;
-        if ($resultatScrutin) $this->resultatScrutin = $resultatScrutin;
-        $this->dureeDiscussion = $dureeDiscussion;
-        $this->dureeScrutin = $dureeScrutin;
-        $this->natureScrutin = $natureScrutin;
-        $this->idProposition = $idProposition;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

@@ -9,14 +9,6 @@ class Est_envoye_au_membre extends Modele {
     public string $loginInter;
     public int $idNotification;
 
-    public function __construct(
-        string $loginInter,
-        int $idNotification
-    ) {
-        $this->loginInter = $loginInter;
-        $this->idNotification = $idNotification;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 

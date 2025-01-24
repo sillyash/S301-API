@@ -19,23 +19,6 @@ class Internaute extends Modele {
     public string $mdpInter;
     public string $adrInter;
 
-    public function __construct(
-        string $loginInter,
-        string $nomInter,
-        string $prenomInter,
-        string $emailInter,
-        string $mdpInter,
-        string $adrInter = null
-    ) {
-        $this->loginInter = $loginInter;
-        $this->nomInter = $nomInter;
-        $this->prenomInter = $prenomInter;
-        $this->emailInter = $emailInter;
-        $this->loginInter = $loginInter;
-        $this->mdpInter = $mdpInter;
-        if ($adrInter) $this->adrInter = $adrInter;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
         $query = "INSERT INTO ".static::$table." (nomInter, prenomInter, emailInter, loginInter, mdpInter, adrInter)"

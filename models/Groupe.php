@@ -9,16 +9,6 @@ class Groupe extends Modele {
     public int $idGroupe;
     public string $nomGroupe;
 
-    public function __construct(
-        string $nomGroupe,
-        int $idGroupe = null
-    ) {
-        if ($idGroupe) {
-            $this->idGroupe = $idGroupe;
-        }
-        $this->nomGroupe = $nomGroupe;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
         $query = "INSERT INTO ".static::$table." (nomGroupe) VALUES (:nomGroupe)";

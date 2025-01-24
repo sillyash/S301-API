@@ -8,14 +8,6 @@ class Role extends Modele {
     public int $idRole;
     public string $nomRole;
 
-    public function __construct(
-        string $nomRole,
-        int $idRole = null
-    ) {
-        if ($idRole) $this->idRole = $idRole;
-        $this->nomRole = $nomRole;
-    }
-
     public function pushToDb() {
         $db = Database::$conn;
 
