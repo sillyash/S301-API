@@ -54,7 +54,7 @@ abstract class Modele {
     * This function is used to push a Model to the database.
     * @return bool The result of the push.
     */
-    public static function pushToDb() {
+    public function pushToDb() {
         $db = Database::$conn;
 
         $attrList = "";
@@ -65,7 +65,7 @@ abstract class Modele {
          * argsList : (:arg1, :arg2, :arg3)
         */
         foreach (static::$requiredAttributes as $attr) {
-            if ($attrList = "") {
+            if ($attrList == "") {
                 $attrList = "($attr";
                 $argsList = "(:$attr";
             } else {
@@ -84,7 +84,7 @@ abstract class Modele {
         $query = "INSERT INTO " . static::$table . $attrList . " VALUES " . $argsList;
         $stmt = $db->prepare($query);
 
-        foreach ($requiredAttributes as $attr) {
+        foreach (static::$requiredAttributes as $attr) {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindParam(":$attr", $val, $PDOtype);
