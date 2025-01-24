@@ -20,12 +20,19 @@ abstract class Modele {
 
     public static function handlePostRequest() {
         $className = static::$table;
+        require_once($className . ".php");
+
+        if (!class_exists($className)) {
+            throw new Exception("Class '$className' does not exist.");
+            return;
+        }
+
         Router::addRoute('POST', "/$className", function()
         {
             $data = json_decode(file_get_contents("php://input"));
     
             try {
-                $classInstance = new $className($data);
+                $classInstance = new static::$table($data);
             } catch (Exception $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
