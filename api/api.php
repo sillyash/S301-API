@@ -28,8 +28,19 @@ function creationSuccess(mixed $object) {
     echo json_encode($response);
 }
 
+function updateSuccess(mixed $object) {
+    header("HTTP/1.1 201 Created");
+
+    $response = array(
+        "message" => "Object updated successfully",
+        "object" => $object
+    );
+
+    echo json_encode($response);
+}
+
 function deletionSuccess(mixed $object) {
-    header("");
+    header("HTTP/1.1 204 No Content");
 
     $response = array (
         "message" => "Object deleted successfully",

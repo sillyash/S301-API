@@ -22,7 +22,7 @@ abstract class Modele {
                 if (!isset($this->$k))
                     throw new ArgumentCountError("Key value $attr not set.");
         }
-                
+
         // Check required attributes (NOT NULL in DB)
         if ($flag == CONSTRUCT_POST)
             foreach (static::$requiredAttributes as $req) {
@@ -92,7 +92,7 @@ abstract class Modele {
                 return;
             }
     
-            creationSuccess($classInstance);
+            updateSuccess($classInstance);
         });
     }
 
