@@ -28,6 +28,17 @@ function creationSuccess(mixed $object) {
     echo json_encode($response);
 }
 
+function deletionSuccess(mixed $object) {
+    header("");
+
+    $response = array (
+        "message" => "Object deleted successfully",
+        "object" => $object
+    );
+
+    echo json_encode($response);
+}
+
 /**
  * This function is used to return a JSON response when fields are incomplete.
  * @param mixed $data The data that was used to create the object.
