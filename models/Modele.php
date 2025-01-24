@@ -90,6 +90,40 @@ abstract class Modele {
         return true;
     }
 
+        /**
+    * This function is used to delete a Model from the database.
+    * @return bool The result of the delete.
+    */
+    public function deleteFromDb() {
+        $db = Database::$conn;
+        $argsList = "";
+
+        // argsList : (arg1 = :arg1) AND (arg2 = :arg2)
+        foreach (static::$cle as $attr) {
+            if ($attrList == "") {
+                $argsList = "($attr = :$attr)";
+            } else {
+                $argsList = "$argsList AND ($attr = :$attr)";
+            }
+        }
+
+        $query = "DELETE FROM " . static::$table . " WHERE " . $argsList;
+        $stmt = $db->prepare($query);
+
+        foreach (static::$cle as $attr) {
+            if (!isset($this->$attr)) {
+                throw ArgumentCountError("Key value $attr not set.");
+                return false;
+            }
+            $val = $this->get($attr);
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindParam(":$attr", $val, $PDOtype);
+        }
+        
+        $stmt->execute();
+        return true;
+    }
+
 
     public static function getPDOtype(mixed $var) {
         switch ($var) {
