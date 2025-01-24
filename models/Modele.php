@@ -5,15 +5,27 @@ abstract class Modele {
     protected static array $cle;
     protected static array $requiredAttributes;
 
-    public function __construct(array | object $attrs) {
-        if (is_null($attrs)) throw new ArgumentCountError();
+    public function __construct(array | object $attrs, bool $keysOnly = false) {
+        if (is_null($attrs)) throw new ArgumentCountError("Object $attrs is null.");
 
-        foreach ($attrs as $attr => $value) {
-            $this->set($attr, $value);
-        }
+        if ($keysOnly == true)
+        {
+            foreach (static::$cle as $attr) {
+                if (!isset($attrs[$attr])) {
+                    throw new ArgumentCountError("Key value $attr not set.");
+                    return false;
+                }
+                $value = $attrs[$attr];
+                $this->set($attr, $value);
+            }
+        } else {
+            foreach ($attrs as $attr => $value) {
+                $this->set($attr, $value);
+            }
 
-        foreach (static::$requiredAttributes as $req) {
-            if (!isset($this->$req)) throw new ArgumentCountError();
+            foreach (static::$requiredAttributes as $req) {
+                if (!isset($this->$req)) throw new ArgumentCountError("Required attribute $req is not defined.");
+            }
         }
     }
 
@@ -61,10 +73,10 @@ abstract class Modele {
 
         Router::addRoute('DELETE', "/$className", function()
         {
-            $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
+            $data = $_GET;
     
             try {
-                $classInstance = new static::$table($data);
+                $classInstance = new static::$table($data, true);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
@@ -131,7 +143,7 @@ abstract class Modele {
 
         // argsList : (arg1 = :arg1) AND (arg2 = :arg2)
         foreach (static::$cle as $attr) {
-            if ($attrList == "") {
+            if ($argsList == "") {
                 $argsList = "($attr = :$attr)";
             } else {
                 $argsList = "$argsList AND ($attr = :$attr)";
@@ -142,8 +154,8 @@ abstract class Modele {
         $stmt = $db->prepare($query);
 
         foreach (static::$cle as $attr) {
-            if (!isset($this->$attr)) {
-                throw ArgumentCountError("Key value $attr not set.");
+            if ($this->get($attr) === null) {
+                throw new ArgumentCountError("Key value $attr not set.");
                 return false;
             }
             $val = $this->get($attr);
