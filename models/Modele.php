@@ -1,34 +1,16 @@
 <?php
 
+define('CONSTRUCT_POST', 0);
+define('CONSTRUCT_PUT', 1);
+define('CONSTRUCT_DELETE', 2);
+
 abstract class Modele {
     protected static string $table;
     protected static array $cle;
     protected static array $requiredAttributes;
 
-    public function __construct(array | object $attrs, bool $keysOnly = false) {
+    public function __construct(array | object $attrs, int $flag = CONSTRUCT_POST) {
         if (is_null($attrs)) throw new ArgumentCountError("Object $attrs is null.");
-
-        if ($keysOnly == true)
-        {
-            foreach (static::$cle as $attr) {
-                if (!isset($attrs[$attr])) {
-                    throw new ArgumentCountError("Key value $attr not set.");
-                    return false;
-                }
-                $value = $attrs[$attr];
-                $this->set($attr, $value);
-            }
-        } else {
-            foreach ($attrs as $attr => $value) {
-                $this->set($attr, $value);
-            }
-
-            foreach (static::$requiredAttributes as $req) {
-                if (!isset($this->$req)) throw new ArgumentCountError("Required attribute $req is not defined.");
-            }
-        }
-    }
-
 
     public static function handlePostRequest() {
         $className = static::$table;
