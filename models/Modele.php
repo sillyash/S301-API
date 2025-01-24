@@ -33,14 +33,14 @@ abstract class Modele {
     
             try {
                 $classInstance = new static::$table($data);
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
             }
     
             try {
                 $classInstance->pushToDb();
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 sqlError($e->getMessage(), $classInstance);
                 return;
             }
