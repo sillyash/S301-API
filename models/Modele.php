@@ -86,7 +86,7 @@ abstract class Modele {
             }
     
             try {
-                $classInstance->pushToDb();
+                $classInstance->updateToDb();
             } catch (Throwable $e) {
                 sqlError($e->getMessage(), $classInstance);
                 return;
@@ -168,7 +168,58 @@ abstract class Modele {
         return true;
     }
 
-        /**
+    /**
+    * This function is used to update a Model on the database.
+    * @return bool The result of the update .
+    */
+    public function updateToDb(array $updates) {
+        $db = Database::$conn;
+        $keyList = "";
+
+        // keyList : (key1 = :key1) AND (key2 = :key2)
+        foreach (static::$cle as $attr) {
+            if ($keyList == "") {
+                $keyList = "($attr = :$attr)";
+            } else {
+                $keyList = "$keyList AND ($attr = :$attr)";
+            }
+        }
+
+        $argsList = "";
+        // argsList : arg1 = :arg1, arg2 = :arg2
+        foreach ($updates as $attr => $val) {
+            if ($argsList == "") {
+                $argsList = "$attr = :$attr";
+            } else {
+                $argsList = $argsList . ", $attr = :$attr";
+            }
+        }
+
+        $query = "UPDATE " . static::$table . " SET " . $argsList . " WHERE " . $keyList;
+        $stmt = $db->prepare($query);
+
+        // Insertion des clés
+        foreach (static::$cle as $attr) {
+            if ($this->get($attr) === null) {
+                throw new ArgumentCountError("Key value $attr not set.");
+                return false;
+            }
+            $val = $this->get($attr);
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindParam(":$attr", $val, $PDOtype);
+        }
+
+        // Insertion des valeurs à update
+        foreach ($updates as $attr => $val) {
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindParam(":$attr", $val, $PDOtype);
+        }
+        
+        $stmt->execute();
+        return true;
+    }
+
+    /**
     * This function is used to delete a Model from the database.
     * @return bool The result of the delete.
     */
