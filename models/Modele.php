@@ -12,6 +12,27 @@ abstract class Modele {
     public function __construct(array | object $attrs, int $flag = CONSTRUCT_POST) {
         if (is_null($attrs)) throw new ArgumentCountError("Object $attrs is null.");
 
+        foreach ($attrs as $attr => $value) {
+            $this->set($attr, $value);
+        }
+
+        // Check keys (PRIMARY KEY in DB)
+        if ($flag == CONSTRUCT_DELETE || $flag == CONSTRUCT_PUT) {
+            foreach (static::$cle as $k) {
+                if (!isset($this->$k))
+                    throw new ArgumentCountError("Key value $attr not set.");
+        }
+        
+        // Check required attributes (NOT NULL in DB)
+        if ($flag == CONSTRUCT_POST)
+            foreach (static::$requiredAttributes as $req) {
+                if (!isset($this->$req))
+                    throw new ArgumentCountError("Required attribute $req is not defined.");
+            }
+        }
+    }
+
+
     public static function handlePostRequest() {
         $className = static::$table;
         require_once($className . ".php");
@@ -26,7 +47,39 @@ abstract class Modele {
             $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
     
             try {
-                $classInstance = new static::$table($data);
+                $classInstance = new static::$table($data, CONSTRUCT_POST);
+            } catch (Throwable $e) {
+                objectCreateError($e->getMessage(), $data);
+                return;
+            }
+    
+            try {
+                $classInstance->pushToDb();
+            } catch (Throwable $e) {
+                sqlError($e->getMessage(), $classInstance);
+                return;
+            }
+    
+            creationSuccess($classInstance);
+        });
+    }
+
+
+    public static function handlePutRequest() {
+        $className = static::$table;
+        require_once($className . ".php");
+
+        if (!class_exists($className)) {
+            throw new Exception("Class '$className' does not exist.");
+            return;
+        }
+
+        Router::addRoute('PUT', "/$className", function()
+        {
+            $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
+    
+            try {
+                $classInstance = new static::$table($data, CONSTRUCT_PUT);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
@@ -58,7 +111,7 @@ abstract class Modele {
             $data = $_GET;
     
             try {
-                $classInstance = new static::$table($data, true);
+                $classInstance = new static::$table($data, CONSTRUCT_DELETE);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
