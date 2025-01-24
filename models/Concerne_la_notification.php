@@ -8,19 +8,6 @@ class Concerne_la_notification extends Modele {
 
     public int $idProposition;
     public int $idNotification;
-
-    public function pushToDb() {
-        $db = Database::$conn;
-
-        $query = "INSERT INTO ".static::$table." (idProposition, idNotification) "
-				. "VALUES (:idProposition, :idNotification)";
-
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':idProposition', $this->idProposition, PDO::PARAM_INT);
-				$stmt->bindParam(':idNotification', $this->idNotification, PDO::PARAM_INT);
-        $stmt->execute();
-        return true;
-    }
 }
 
 ?>

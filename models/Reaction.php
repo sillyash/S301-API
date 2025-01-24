@@ -8,17 +8,6 @@ class Reaction extends Modele {
 
     public int $idReaction;
     public int $typeReaction;
-
-    public function pushToDb() {
-        $db = Database::$conn;
-
-        $query = "INSERT INTO ".static::$table." (typeReaction) VALUES (:typeReaction)";
-
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':typeReaction', $this->typeReaction, PDO::PARAM_INT);
-        $stmt->execute();
-        return true;
-    }
 }
 
 ?>

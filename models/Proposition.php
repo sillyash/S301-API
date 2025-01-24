@@ -16,18 +16,6 @@ class Proposition extends Modele {
     public int $popularite;
     public string $dateProp;
     public int $idBudget;
-            
-    public function pushToDb() {
-        $db = Database::$conn;
-        $query = "INSERT INTO " . static::$table ." (titreProposition, descProposition, idBudget) VALUES (:titre, :description, :idBudget)";
-
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':titre', $this->titre);
-        $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':idBudget', $this->idBudget);
-        $stmt->execute();
-        return true;
-    }
 }
 
 ?>

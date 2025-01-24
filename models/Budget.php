@@ -8,17 +8,6 @@ class Budget extends Modele {
 
     public int $idBudget;
     public int $limiteBudgetGlobal;
-
-    public function pushToDb() {
-        $db = Database::$conn;
-
-        $query = "INSERT INTO ".static::$table." (limiteBudgetGlobal) VALUES (:limiteBudgetGlobal)";
-
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':limiteBudgetGlobal', $this->limiteBudgetGlobal, PDO::PARAM_INT);
-        $stmt->execute();
-        return true;
-    }
 }
 
 ?>
