@@ -76,10 +76,6 @@ abstract class Modele {
         
         $attrList = $attrList . ")";
         $argsList = $argsList . ")";
-        
-        echo $attrList;
-        echo '\n';
-        echo $argsList;
 
         $query = "INSERT INTO " . static::$table . $attrList . " VALUES " . $argsList;
         $stmt = $db->prepare($query);
