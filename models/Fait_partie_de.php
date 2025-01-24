@@ -2,9 +2,9 @@
 require_once 'Modele.php';
 
 class Fait_partie_de extends Modele {
-  private static string $table = 'Fait_partie_de';
-  private static array $cle = ['idGroupe', 'loginInter'];
-  private static array $requiredAttributes = ['idGroupe', 'loginInter'];
+  protected static string $table = 'Fait_partie_de';
+  protected static array $cle = ['idGroupe', 'loginInter'];
+  protected static array $requiredAttributes = ['idGroupe', 'loginInter'];
 
     public int $idGroupe;
     public string $loginInter;

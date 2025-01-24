@@ -2,9 +2,9 @@
 require_once 'Modele.php';
 
 class Notification extends Modele {
-    private static string $table = 'Notification';
-    private static array $cle = ['idNotification'];
-    private static array $requiredAttributes = [
+    protected static string $table = 'Notification';
+    protected static array $cle = ['idNotification'];
+    protected static array $requiredAttributes = [
         'typeNotification',
         'messageNotification'
     ];

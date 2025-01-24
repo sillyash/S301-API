@@ -2,9 +2,9 @@
 require_once 'Modele.php';
 
 class Propose extends Modele {
-  private static string $table = 'Propose';
-  private static array $cle = ['idProposition', 'loginInter'];
-  private static array $requiredAttributes = ['idProposition', 'loginInter'];
+  protected static string $table = 'Propose';
+  protected static array $cle = ['idProposition', 'loginInter'];
+  protected static array $requiredAttributes = ['idProposition', 'loginInter'];
 
     public int $idProposition;
     public string $loginInter;

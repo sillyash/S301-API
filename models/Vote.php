@@ -2,8 +2,8 @@
 require_once 'Modele.php';
 
 class Vote extends Modele {
-  private static string $table = 'Vote';
-  private static array $cle = ['loginInter', 'idScrutin'];
+  protected static string $table = 'Vote';
+  protected static array $cle = ['loginInter', 'idScrutin'];
 
     public string $loginInter;
     public int $idScrutin;

@@ -2,9 +2,9 @@
 require_once 'Modele.php';
 
 class Est_envoye_au_membre extends Modele {
-  private static string $table = 'Est_envoye_au_membre';
-  private static array $cle = ['loginInter', 'idNotification'];
-  private static array $requiredAttributes = ['loginInter', 'idNotification'];
+  protected static string $table = 'Est_envoye_au_membre';
+  protected static array $cle = ['loginInter', 'idNotification'];
+  protected static array $requiredAttributes = ['loginInter', 'idNotification'];
 
     public string $loginInter;
     public int $idNotification;

@@ -1,9 +1,9 @@
 <?php
 
 abstract class Modele {
-    private static string $table;
-    private static array $cle;
-    private static array $requiredAttributes;
+    protected static string $table;
+    protected static array $cle;
+    protected static array $requiredAttributes;
 
     /**
     * This function is used to push an object to the database.

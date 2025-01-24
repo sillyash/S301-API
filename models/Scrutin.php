@@ -2,9 +2,9 @@
 require_once 'Modele.php';
 
 class Scrutin extends Modele {
-    private static string $table = 'Scrutin';
-    private static array $cle = ['idScrutin'];
-    private static array $requiredAttributes = [
+    protected static string $table = 'Scrutin';
+    protected static array $cle = ['idScrutin'];
+    protected static array $requiredAttributes = [
         'dureeDiscussion',
         'dureeScrutin',
         'natureScrutin',

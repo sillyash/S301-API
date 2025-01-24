@@ -2,9 +2,9 @@
 require_once 'Modele.php';
 
 class Internaute extends Modele {
-    private static string $table = 'Internaute';
-    private static array $cle = ['loginInter'];
-    private static array $requiredAttributes = [
+    protected static string $table = 'Internaute';
+    protected static array $cle = ['loginInter'];
+    protected static array $requiredAttributes = [
         'nomInter',
         'prenomInter',
         'emailInter',
