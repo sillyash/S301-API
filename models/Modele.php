@@ -180,9 +180,9 @@ abstract class Modele {
         // keyList : (key1 = :key1) AND (key2 = :key2)
         foreach (static::$cle as $attr) {
             if ($keyList == "") {
-                $keyList = "($attr = :$attr)";
+                $keyList = "($attr=:$attr)";
             } else {
-                $keyList = "$keyList AND ($attr = :$attr)";
+                $keyList = "$keyList AND ($attr=:$attr)";
             }
         }
 
@@ -190,22 +190,19 @@ abstract class Modele {
         // argsList : arg1 = :arg1, arg2 = :arg2
         foreach (static::$requiredAttributes as $attr) {
             if ($argsList == "") {
-                $argsList = $attr . " = :" . $attr;
+                $argsList = "$attr=:$attr";
             } else {
-                $argsList = $argsList . ", " . $attr . " = :" . $attr;
+                $argsList = "$argsList, $attr=:$attr";
             }
         }
 
         $query = "UPDATE " . static::$table . " SET " . $argsList . " WHERE " . $keyList;
         $stmt = $db->prepare($query);
 
-        echo $query;
-
         // Insertion des clés
         foreach (static::$cle as $attr) {
             if ($this->get($attr) === null) {
                 throw new ArgumentCountError("Key value $attr not set.");
-                return false;
             }
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
@@ -220,6 +217,7 @@ abstract class Modele {
         }
         
         $stmt->execute();
+        $stmt->debugDumpParams();
         return true;
     }
 
@@ -234,9 +232,9 @@ abstract class Modele {
         // argsList : (arg1 = :arg1) AND (arg2 = :arg2)
         foreach (static::$cle as $attr) {
             if ($argsList == "") {
-                $argsList = "($attr = :$attr)";
+                $argsList = "($attr=:$attr)";
             } else {
-                $argsList = "$argsList AND ($attr = :$attr)";
+                $argsList = "$argsList AND ($attr=:$attr)";
             }
         }
 
