@@ -162,7 +162,7 @@ abstract class Modele {
         foreach (static::$requiredAttributes as $attr) {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
-            $stmt->bindParam(":$attr", $val, $PDOtype);
+            $stmt->bindValue(":$attr", $val, $PDOtype);
         }
         
         $stmt->execute();
@@ -206,14 +206,16 @@ abstract class Modele {
             }
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
-            $stmt->bindParam(":$attr", $val, $PDOtype);
+            echo "$attr : $val\n";
+            $stmt->bindValue(":$attr", $val, $PDOtype);
         }
 
         // Insertion des valeurs à update (on les met toutes au cas où)
         foreach (static::$requiredAttributes as $attr) {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
-            $stmt->bindParam(":$attr", $val, $PDOtype);
+            echo "$attr : $val";
+            $stmt->bindValue(":$attr", $val, $PDOtype);
         }
         
         $stmt->execute();
@@ -248,7 +250,7 @@ abstract class Modele {
             }
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
-            $stmt->bindParam(":$attr", $val, $PDOtype);
+            $stmt->bindValue(":$attr", $val, $PDOtype);
         }
         
         $stmt->execute();

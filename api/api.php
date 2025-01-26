@@ -128,7 +128,7 @@ function get_data(string $table, int $rows = null) {
     if ($rows) {
         $query = "SELECT * FROM `$table` LIMIT :rows";
         $stmt = $db->prepare($query);
-        $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
+        $stmt->bindValue(':rows', $rows, PDO::PARAM_INT);
     } else {
         $query = "SELECT * FROM `$table`";
         $stmt = $db->prepare($query);
