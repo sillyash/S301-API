@@ -21,10 +21,11 @@ abstract class Modele {
             foreach (static::$cle as $k) {
                 if (!isset($this->$k))
                     throw new ArgumentCountError("Key value $attr not set.");
+            }
         }
 
         // Check required attributes (NOT NULL in DB)
-        if ($flag == CONSTRUCT_POST)
+        if ($flag == CONSTRUCT_POST) {
             foreach (static::$requiredAttributes as $req) {
                 if (!isset($this->$req))
                     throw new ArgumentCountError("Required attribute $req is not defined.");
