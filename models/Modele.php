@@ -171,7 +171,7 @@ abstract class Modele {
 
     /**
     * This function is used to update a Model on the database.
-    * @return bool The result of the update .
+    * @return bool The result of the update.
     */
     public function updateToDb() {
         $db = Database::$conn;
