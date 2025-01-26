@@ -1,11 +1,5 @@
 # S301-API
 
-## TODO
-
-- [ ] Make diff error for method not allowed and missing arguments
-- [ ] Test mail
-- [ ] Test POST
-
 ## Project tree
 
 ```dir
