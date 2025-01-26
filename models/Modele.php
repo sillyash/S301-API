@@ -45,11 +45,24 @@ abstract class Modele {
             $query = "SELECT * FROM `$table`";
             
             if ($orderby) {
-                if (!in_array(static::$requiredAttributes, $orderby) && !in_array(static::$cle, $orderby)) {
+                if (!in_array($orderby, static::$requiredAttributes) && !in_array($orderby, static::$cle)) {
                     throw new Exception("Column $orderby doesn't exist in $table.");
                     return false;
                 }
+                // ORDER BY clauses cannot use prepared statements
+                // However, safe to use because $orderby is part of ::$cle or ::$requiredAttributes
                 $query = $query . " ORDER BY $orderby";
+
+                $desc = $_GET['desc'] ?? null;
+                if ($desc) {
+                    if ($desc != "true") {
+                        throw new Exception("desc must be 'true'.");
+                        return false;
+                    }
+                    $query = $query . " DESC";
+                } else {
+                    $query = $query . " ASC";
+                }
             }
 
             if ($rows) {
@@ -69,8 +82,7 @@ abstract class Modele {
             }
         
             $stmt = $db->prepare($query);
-            $stmt->bindValue(':rows', $rows, PDO::PARAM_INT);
-            $stmt->bindValue(':orderby', $orderby, PDO::PARAM_STR);
+            if ($rows) $stmt->bindValue(':rows', $rows, PDO::PARAM_INT);
             
             try {
                 $stmt->execute();
