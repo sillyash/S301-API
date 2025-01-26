@@ -1,5 +1,24 @@
 <?php
 /* This file is used to define routes for GET requests. */
+require_once(ROOT_PATH . '/models/A_pour_reaction.php');
+require_once(ROOT_PATH . '/models/A_pour_theme.php');
+require_once(ROOT_PATH . '/models/Budget.php');
+require_once(ROOT_PATH . '/models/Commentaire.php');
+require_once(ROOT_PATH . '/models/Concerne_la_notification.php');
+require_once(ROOT_PATH . '/models/Est_envoye_au_membre.php');
+require_once(ROOT_PATH . '/models/Fait_partie_de.php');
+require_once(ROOT_PATH . '/models/Groupe.php');
+require_once(ROOT_PATH . '/models/Internaute.php');
+require_once(ROOT_PATH . '/models/Notification.php');
+require_once(ROOT_PATH . '/models/Propose.php');
+require_once(ROOT_PATH . '/models/Proposition.php');
+require_once(ROOT_PATH . '/models/Reaction.php');
+require_once(ROOT_PATH . '/models/Reagit.php');
+require_once(ROOT_PATH . '/models/Role.php');
+require_once(ROOT_PATH . '/models/Scrutin.php');
+require_once(ROOT_PATH . '/models/Signalement.php');
+require_once(ROOT_PATH . '/models/Theme.php');
+require_once(ROOT_PATH . '/models/Vote.php');
 
 Router::addRoute('GET', '/test/env', function() {
     $response = array(
@@ -17,15 +36,24 @@ Router::addRoute('GET', '/test/env', function() {
     echo json_encode($response);
 });
 
-Router::addRoute('GET', '/table', function() {
-    if (!isset($_GET['table'])) {
-        http_response_code(400);
-        echo json_encode(["error" => "Table parameter is required"]);
-        return;
-    }
-    $table = $_GET['table'];
-    $rows = isset($_GET['rows']) ? intval($_GET['rows']) : null;
-    get_data($table, $rows);
-});
+A_pour_reaction::handleGetRequestTable();
+A_pour_theme::handleGetRequestTable();
+Budget::handleGetRequestTable();
+Commentaire::handleGetRequestTable();
+Concerne_la_notification::handleGetRequestTable();
+Est_envoye_au_membre::handleGetRequestTable();
+Fait_partie_de::handleGetRequestTable();
+Groupe::handleGetRequestTable();
+Internaute::handleGetRequestTable();
+Notification::handleGetRequestTable();
+Propose::handleGetRequestTable();
+Proposition::handleGetRequestTable();
+Reaction::handleGetRequestTable();
+Reagit::handleGetRequestTable();
+Role::handleGetRequestTable();
+Scrutin::handleGetRequestTable();
+Signalement::handleGetRequestTable();
+Theme::handleGetRequestTable();
+Vote::handleGetRequestTable();
 
 ?>

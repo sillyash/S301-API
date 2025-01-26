@@ -34,6 +34,55 @@ abstract class Modele {
     }
 
 
+    public static function handleGetRequestTable() {
+        $table = static::$table;
+        Router::addRoute('GET', "/table/$table", function() {
+            $db = Database::$conn;
+            $table = static::$table;
+            $rows = $_GET['rows'] ?? null;
+            $orderby = $_GET['orderby'] ?? null;
+            $query = "SELECT * FROM `$table`";
+            
+            if ($orderby) {
+                if (!in_array(static::$requiredAttributes, $orderby) && !in_array(static::$cle, $orderby)) {
+                    throw new Exception("Column $orderby doesn't exist in $table.");
+                    return false;
+                }
+                $query = $query . " ORDER BY $orderby";
+            }
+
+            if ($rows) {
+                if (!is_numeric($rows)) {
+                    throw new Exception("Rows must be a number.");
+                    return false;
+                }
+                
+                $rows = intval($rows);
+                
+                if ($rows < 0) {
+                    throw new Exception("Rows must be a positive number.");
+                    return false;
+                }
+                
+                $query = $query . " LIMIT :rows";
+            }
+        
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(':rows', $rows, PDO::PARAM_INT);
+            $stmt->bindValue(':orderby', $orderby, PDO::PARAM_STR);
+            
+            try {
+                $stmt->execute();
+                $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                sqlError($e->getMessage(), $table);
+                return;
+            }
+            
+            echo json_encode($data);
+        });
+    }
+
     public static function handlePostRequest() {
         $className = static::$table;
         require_once($className . ".php");
