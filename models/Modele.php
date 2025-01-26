@@ -3,6 +3,7 @@
 define('CONSTRUCT_POST', 0);
 define('CONSTRUCT_PUT', 1);
 define('CONSTRUCT_DELETE', 2);
+define('CONSTRUCT_GET', 3);
 
 abstract class Modele {
     protected static string $table;
@@ -17,7 +18,7 @@ abstract class Modele {
         }
 
         // Check keys (PRIMARY KEY in DB)
-        if ($flag == CONSTRUCT_DELETE || $flag == CONSTRUCT_PUT) {
+        if ($flag == CONSTRUCT_DELETE || $flag == CONSTRUCT_PUT || $flag == CONSTRUCT_GET) {
             foreach (static::$cle as $k) {
                 if (!isset($this->$k))
                     throw new ArgumentCountError("Key value $attr not set.");
@@ -82,6 +83,39 @@ abstract class Modele {
             echo json_encode($data);
         });
     }
+
+
+    public static function handleGetRequest() {
+        $className = static::$table;
+        require_once($className . ".php");
+
+        if (!class_exists($className)) {
+            throw new Exception("Class '$className' does not exist.");
+            return;
+        }
+
+        Router::addRoute('GET', "/$className", function()
+        {
+            $data = $_GET;
+    
+            try {
+                $classInstance = new static::$table($data, CONSTRUCT_GET);
+            } catch (Throwable $e) {
+                objectCreateError($e->getMessage(), $data);
+                return;
+            }
+    
+            try {
+                $data = $classInstance->getFromDb();
+            } catch (Throwable $e) {
+                sqlError($e->getMessage(), $classInstance);
+                return;
+            }
+
+            echo json_encode($data);
+        });
+    }
+
 
     public static function handlePostRequest() {
         $className = static::$table;
@@ -176,6 +210,46 @@ abstract class Modele {
     
             deletionSuccess($classInstance);
         });
+    }
+
+    /**
+    * This function is used to get a Model from the database.
+    * @return array|null The result of the get.
+    */
+    public function getFromDb() {
+        $db = Database::$conn;
+        $argsList = "";
+
+        // argsList : (arg1 = :arg1) AND (arg2 = :arg2)
+        foreach (static::$cle as $attr) {
+            if ($argsList == "") {
+                $argsList = "($attr=:$attr)";
+            } else {
+                $argsList = "$argsList AND ($attr=:$attr)";
+            }
+        }
+
+        $query = "SELECT * FROM " . static::$table . " WHERE " . $argsList;
+        $stmt = $db->prepare($query);
+
+        foreach (static::$cle as $attr) {
+            if ($this->get($attr) === null) {
+                throw new ArgumentCountError("Key value $attr not set.");
+                return false;
+            }
+            $val = $this->get($attr);
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindValue(":$attr", $val, $PDOtype);
+        }
+        
+        try {
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+            return null;
+        }
+        return $data;
     }
     
     /**

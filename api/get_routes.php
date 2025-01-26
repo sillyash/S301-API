@@ -56,4 +56,24 @@ Signalement::handleGetRequestTable();
 Theme::handleGetRequestTable();
 Vote::handleGetRequestTable();
 
+A_pour_reaction::handleGetRequest();
+A_pour_theme::handleGetRequest();
+Budget::handleGetRequest();
+Commentaire::handleGetRequest();
+Concerne_la_notification::handleGetRequest();
+Est_envoye_au_membre::handleGetRequest();
+Fait_partie_de::handleGetRequest();
+Groupe::handleGetRequest();
+Internaute::handleGetRequest();
+Notification::handleGetRequest();
+Propose::handleGetRequest();
+Proposition::handleGetRequest();
+Reaction::handleGetRequest();
+Reagit::handleGetRequest();
+Role::handleGetRequest();
+Scrutin::handleGetRequest();
+Signalement::handleGetRequest();
+Theme::handleGetRequest();
+Vote::handleGetRequest();
+
 ?>
