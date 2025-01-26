@@ -206,7 +206,6 @@ abstract class Modele {
             }
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
-            echo "$attr : $val\n";
             $stmt->bindValue(":$attr", $val, $PDOtype);
         }
 
@@ -214,12 +213,10 @@ abstract class Modele {
         foreach (static::$requiredAttributes as $attr) {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
-            echo "$attr : $val";
             $stmt->bindValue(":$attr", $val, $PDOtype);
         }
         
         $stmt->execute();
-        $stmt->debugDumpParams();
         return true;
     }
 
