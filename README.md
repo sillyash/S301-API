@@ -8,39 +8,43 @@
 
 ## Project tree
 
-```
-root/
-│
-├── api/
-│   ├── api.php
-│   ├── db.php
-│   ├── delete_routes.php
-│   ├── get_routes.php
-│   ├── post_routes.php
-│   ├── put_routes.php
-│   └── Router.php
-│
-├── models/
-│   ├── Budget.php
-│   ├── Commentaire.php
-│   ├── Groupe.php
-│   ├── Internaute.php
-│   ├── Membre.php
-│   ├── Modele.php
-│   ├── Notification.php
-│   ├── Proposition.php
-│   ├── Reaction.php
-│   ├── Role.php
-│   ├── Scrutin.php
-│   ├── Signalement.php
-│   └── Theme.php
-│
+```dir
+.
+├── api
+│   ├── api.php
+│   ├── db.php
+│   ├── delete_routes.php
+│   ├── get_routes.php
+│   ├── post_routes.php
+│   ├── put_routes.php
+│   └── Router.php
+├── models
+│   ├── A_pour_reaction.php
+│   ├── A_pour_theme.php
+│   ├── Budget.php
+│   ├── Commentaire.php
+│   ├── Concerne_la_notification.php
+│   ├── Est_envoye_au_membre.php
+│   ├── Fait_partie_de.php
+│   ├── Groupe.php
+│   ├── Internaute.php
+│   ├── Modele.php
+│   ├── Notification.php
+│   ├── Propose.php
+│   ├── Proposition.php
+│   ├── Reaction.php
+│   ├── Reagit.php
+│   ├── Role.php
+│   ├── Scrutin.php
+│   ├── Signalement.php
+│   ├── Theme.php
+│   └── Vote.php
 ├── .htaccess
-├── api.sh
 ├── config.php
 ├── index.php
 ├── LICENSE
-└── README.md
+├── README.md
+└── ROUTES.md
 ```
 
 ## API
