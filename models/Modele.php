@@ -10,7 +10,7 @@ abstract class Modele {
     protected static string $table;
     protected static array $cle;
     protected static array $requiredAttributes;
-    protected static array $dynamicAttributes = [];
+    protected static array $dynamicAttributes;
 
     public function __construct(array | object $attrs, int $flag = CONSTRUCT_POST) {
         if (is_null($attrs)) throw new ArgumentCountError("Object $attrs is null.");
@@ -40,37 +40,27 @@ abstract class Modele {
      * This function is used to initialize the Model.
      */
     public static function init() {
-        $columns = static::tableDescFromDB();
         static::$cle = [];
         static::$requiredAttributes = [];
 
-        foreach ($columns as $column) {
-            $query = Database::$conn->query("SHOW COLUMNS FROM " . static::$table . " LIKE '$column'");
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if ($result['Key'] === 'PRI') {
-                static::$cle[] = $column;
-            }
-
-            if ($result['Null'] === 'NO') {
-                static::$requiredAttributes[] = $column;
-            }
-
-            if (!property_exists(static::class, $column)) {
-                static::addAttribute($column);
-            }
+        $db = Database::$conn;
+        $query = $db->query("SELECT * FROM " . static::$table . "LIMIT 1");
+        
+        if (!$query) {
+            throw new Exception("Table " . static::$table . " doesn't exist.");
+            return false;
         }
-    }
+        $cols = $query->columnCount();
+        
+        for ($i = 0; $i < $cols; $i++) {
+            $meta = $query->getColumnMeta(0);
+            $flags = $meta["flags"];
+            $colName = $meta["name"];
 
-    /**
-     * Adds a dynamic attribute to the model if it does not already exist.
-     *
-     * @param string $propertyName The name of the attribute to add.
-     */
-    protected static function addAttribute($propertyName) {
-        // Get the child class
-        $className = get_called_class();
-        $className::$dynamicAttributes[] = $propertyName;
+            static::$dynamicAttributes[] = $colName;
+            if (in_array("primary_key", $flags)) static::$cle[] = $colName;
+            else if (in_array("not_null", $flags)) static::$requiredAttributes[] = $colName;
+        }
     }
 
     /**
@@ -460,19 +450,6 @@ abstract class Modele {
         }
 
         return $PDOtype;
-    }
-
-    /**
-     * This function is used to fetch the attributes of a Model from the database.
-     * @return array The attributes of the Model.
-     */
-    public static function tableDescFromDB() {
-        $db = Database::$conn;
-        $table = ucfirst(strtolower(static::class));
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->fetchAll(PDO::FETCH_COLUMN);
-
-        return $columns;
     }
 
     public static function getCle() { return static::$cle; }
