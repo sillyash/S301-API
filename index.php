@@ -1,6 +1,7 @@
 <?php
 require_once('config.php');
-require_once(ROOT_PATH . '/api/api.php');
+require_once(ROOT_PATH . '/api/db.php');
+Database::createConnection();
 
 /* Models */
 require_once(ROOT_PATH . '/models/A_pour_reaction.php');
@@ -22,6 +23,28 @@ require_once(ROOT_PATH . '/models/Scrutin.php');
 require_once(ROOT_PATH . '/models/Signalement.php');
 require_once(ROOT_PATH . '/models/Theme.php');
 require_once(ROOT_PATH . '/models/Vote.php');
+
+A_pour_reaction::init();
+A_pour_theme::init();
+Budget::init();
+Commentaire::init();
+Concerne_la_notification::init();
+Est_envoye_au_membre::init();
+Fait_partie_de::init();
+Groupe::init();
+Internaute::init();
+Notification::init();
+Propose::init();
+Proposition::init();
+Reaction::init();
+Reagit::init();
+Role::init();
+Scrutin::init();
+Signalement::init();
+Theme::init();
+Vote::init();
+
+require_once(ROOT_PATH . '/api/api.php');
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 

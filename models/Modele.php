@@ -5,10 +5,12 @@ define('CONSTRUCT_PUT', 1);
 define('CONSTRUCT_DELETE', 2);
 define('CONSTRUCT_GET', 3);
 
+#[AllowDynamicProperties]
 abstract class Modele {
     protected static string $table;
     protected static array $cle;
     protected static array $requiredAttributes;
+    protected static array $dynamicAttributes = [];
 
     public function __construct(array | object $attrs, int $flag = CONSTRUCT_POST) {
         if (is_null($attrs)) throw new ArgumentCountError("Object $attrs is null.");
@@ -34,7 +36,46 @@ abstract class Modele {
         }
     }
 
+    /**
+     * This function is used to initialize the Model.
+     */
+    public static function init() {
+        $columns = static::tableDescFromDB();
+        static::$cle = [];
+        static::$requiredAttributes = [];
 
+        foreach ($columns as $column) {
+            $query = Database::$conn->query("SHOW COLUMNS FROM " . static::$table . " LIKE '$column'");
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            
+            if ($result['Key'] === 'PRI') {
+                static::$cle[] = $column;
+            }
+
+            if ($result['Null'] === 'NO') {
+                static::$requiredAttributes[] = $column;
+            }
+
+            if (!property_exists(static::class, $column)) {
+                static::addAttribute($column);
+            }
+        }
+    }
+
+    /**
+     * Adds a dynamic attribute to the model if it does not already exist.
+     *
+     * @param string $propertyName The name of the attribute to add.
+     */
+    protected static function addAttribute($propertyName) {
+        // Get the child class
+        $className = get_called_class();
+        $className::$dynamicAttributes[] = $propertyName;
+    }
+
+    /**
+     * This function is used to handle the GET request for a table.
+     */
     public static function handleGetRequestTable() {
         $table = static::$table;
         Router::addRoute('GET', "/table/$table", function() {
@@ -96,7 +137,9 @@ abstract class Modele {
         });
     }
 
-
+    /**
+     * This function is used to handle the GET request for a table.
+     */
     public static function handleGetRequest() {
         $className = static::$table;
         require_once($className . ".php");
@@ -128,7 +171,9 @@ abstract class Modele {
         });
     }
 
-
+    /**
+     * This function is used to handle the POST request for a table.
+     */
     public static function handlePostRequest() {
         $className = static::$table;
         require_once($className . ".php");
@@ -160,7 +205,9 @@ abstract class Modele {
         });
     }
 
-
+    /**
+     * This function is used to handle the PUT request for a table.
+     */
     public static function handlePutRequest() {
         $className = static::$table;
         require_once($className . ".php");
@@ -192,7 +239,9 @@ abstract class Modele {
         });
     }
 
-
+    /**
+     * This function is used to handle the DELETE request for a table.
+     */
     public static function handleDeleteRequest() {
         $className = static::$table;
         require_once($className . ".php");
@@ -389,7 +438,11 @@ abstract class Modele {
         return true;
     }
 
-
+    /**
+     * This function is used to get the PDO type of a variable.
+     * @param mixed $var The variable to get the PDO type of.
+     * @return int The PDO type of the variable.
+     */
     public static function getPDOtype(mixed $var) {
         switch ($var) {
             case is_int($var):
@@ -407,6 +460,19 @@ abstract class Modele {
         }
 
         return $PDOtype;
+    }
+
+    /**
+     * This function is used to fetch the attributes of a Model from the database.
+     * @return array The attributes of the Model.
+     */
+    public static function tableDescFromDB() {
+        $db = Database::$conn;
+        $table = ucfirst(strtolower(static::class));
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->fetchAll(PDO::FETCH_COLUMN);
+
+        return $columns;
     }
 
     public static function getCle() { return static::$cle; }
