@@ -21,4 +21,8 @@ Signalement::handlePostRequest();
 Theme::handlePostRequest();
 Vote::handlePostRequest();
 
+Mail::handleAccountValidation();
+Mail::handleInvites();
+Mail::handleNotifications();
+
 ?>
