@@ -39,7 +39,7 @@ function updateSuccess(mixed $object) {
 }
 
 function deletionSuccess(mixed $object) {
-    header("HTTP/1.1 204 No Content");
+    header("HTTP/1.1 200 OK");
 
     $response = array (
         "message" => "Object deleted successfully",

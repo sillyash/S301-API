@@ -99,18 +99,16 @@ abstract class Modele extends stdClass {
                 if (
                     !in_array($orderby, $class::$requiredAttributes)
                     && !in_array($orderby, $class::$optionalAttributes)
-                    && !in_array($orderby, $class::$optionalAttributes)
+                    && !in_array($orderby, $class::$cle)
                 ) {
-                    /*
                     $dump = array(
                         "table" => $table,
                         "cle" => $class::$cle,
                         "req" => $class::$requiredAttributes,
                         "opt" => $class::$optionalAttributes
                     );
-                    echo json_encode($dump);
-                    */
-                    throw new Exception("Column $orderby doesn't exist in $table.");
+                    //echo json_encode($dump);
+                    throw new Exception("Column $orderby doesn't exist in table : " . json_encode($dump));
                     return false;
                 }
                 // ORDER BY clauses cannot use prepared statements
@@ -209,6 +207,7 @@ abstract class Modele extends stdClass {
 
         Router::addRoute('POST', "/$className", function()
         {
+            $className = get_called_class();
             $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
     
             try {
@@ -243,6 +242,7 @@ abstract class Modele extends stdClass {
 
         Router::addRoute('PUT', "/$className", function()
         {
+            $className = get_called_class();
             $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
     
             try {
@@ -277,6 +277,7 @@ abstract class Modele extends stdClass {
 
         Router::addRoute('DELETE', "/$className", function()
         {
+            $className = get_called_class();
             $data = $_GET;
     
             try {
