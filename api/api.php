@@ -101,18 +101,6 @@ function sqlError(mixed $error, mixed $data) {
     echo json_encode($response);
 }
 
-/** 
- * This function is used to handle special characters in a string.
- * @param string $data The string to handle.
- * @return string The string with special characters handled.
- * @return void
- */
-function handleChars(string $data) {
-    $data = htmlspecialchars($data);
-    $data = stripslashes($data);
-    return $data;
-}
-
 /**
  * This function is used to get data from a table in the database.
  * @param string $table The name of the table to get data from.
