@@ -1,13 +1,16 @@
 <?php
-require_once("../config.php");
 
 class Mail {
     protected string $to;
     protected string $subject;
     protected string $message;
-    protected string $headers;
+    protected array $headers;
 
-    public function __construct(string $to, string $subject, string $message, array $headers = EMAIL_HEADERS) {
+    public function __construct(
+        string $to,
+        string $subject,
+        string $message,
+        array $headers = EMAIL_HEADERS) {
         $this->to = $to;
         $this->subject = $subject;
         $this->message = $message;
@@ -40,7 +43,7 @@ class Mail {
      * @return void
      */
     public static function handleInvites() : void {
-        Router::addRoute('POST', '/mail/accountValidation', function() {
+        Router::addRoute('POST', '/mail/invites', function() {
             $data = json_decode(file_get_contents("php://input"), true);
             $to = $data['to'] ?? null;
             $subject = $data['subject'] ?? null;
@@ -167,7 +170,10 @@ class Mail {
         foreach ($to as $recipient) {
             try {
                 $mail = new Mail($recipient, $subject, $message, $headers);
-                $mail->send();
+                $mailOK = $mail->send();
+                if (!$mailOK) {
+                    throw new Exception('Mail failed to send');
+                }
             } catch (Exception $e) {
                 $dump = array(
                     'message' => 'Error sending email',
