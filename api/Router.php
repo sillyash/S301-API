@@ -25,7 +25,17 @@ class Router {
      */
     public static function addRoute(string $method, string $path, callable $callback) {
         $method = strtoupper($method);
-        static::$routes[$method][$path] = $callback;
+        
+        try {
+            static::$routes[$method][$path] = $callback;
+        } catch (Throwable $e) {
+            header("HTTP/1.0 500 Internal Server Error");
+            echo json_encode([
+                "message" => "We encountered an error while adding the request.",
+                "error" => $e->getMessage(),
+            ]);
+            return;
+        }
     }
 
     /**
@@ -60,7 +70,16 @@ class Router {
             return;
         }
 
-        call_user_func(static::$routes[$method][$uri]);
+        try {
+            call_user_func(static::$routes[$method][$uri]);
+        } catch (Throwable $e) {
+            header("HTTP/1.0 500 Internal Server Error");
+            /*echo json_encode([
+                "message" => "We encountered an error while running your request.",
+                "error" => $e->getMessage(),
+            ]);*/
+            return;
+        }
     }
 }
 

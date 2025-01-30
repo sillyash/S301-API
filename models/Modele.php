@@ -5,14 +5,15 @@ define('CONSTRUCT_PUT', 1);
 define('CONSTRUCT_DELETE', 2);
 define('CONSTRUCT_GET', 3);
 
-#[AllowDynamicProperties]
-abstract class Modele {
+abstract class Modele extends stdClass {
     protected static string $table;
     protected static array $cle;
     protected static array $requiredAttributes;
-    protected static array $dynamicAttributes;
+    protected static array $optionalAttributes;
 
     public function __construct(array | object $attrs, int $flag = CONSTRUCT_POST) {
+        $class = get_called_class();
+
         if (is_null($attrs)) throw new ArgumentCountError("Object $attrs is null.");
 
         foreach ($attrs as $attr => $value) {
@@ -21,7 +22,7 @@ abstract class Modele {
 
         // Check keys (PRIMARY KEY in DB)
         if ($flag == CONSTRUCT_DELETE || $flag == CONSTRUCT_PUT || $flag == CONSTRUCT_GET) {
-            foreach (static::$cle as $k) {
+            foreach ($class::$cle as $k) {
                 if (!isset($this->$k))
                     throw new ArgumentCountError("Key value $attr not set.");
             }
@@ -29,7 +30,7 @@ abstract class Modele {
 
         // Check required attributes (NOT NULL in DB)
         if ($flag == CONSTRUCT_POST) {
-            foreach (static::$requiredAttributes as $req) {
+            foreach ($class::$requiredAttributes as $req) {
                 if (!isset($this->$req))
                     throw new ArgumentCountError("Required attribute $req is not defined.");
             }
@@ -40,43 +41,77 @@ abstract class Modele {
      * This function is used to initialize the Model.
      */
     public static function init() {
-        static::$cle = [];
-        static::$requiredAttributes = [];
+        $class = get_called_class();
+        $class::$cle = [];
+        $class::$requiredAttributes = [];
+        $class::$optionalAttributes = [];
+
+        echo "TABLE : " . $class::$table;
 
         $db = Database::$conn;
-        $query = $db->query("SELECT * FROM " . static::$table . " LIMIT 1");
+        $query = $db->query("SELECT * FROM " . $class::$table . " LIMIT 1");
         
         if (!$query) {
-            throw new Exception("Table " . static::$table . " doesn't exist.");
+            throw new Exception("Table " . $class::$table . " doesn't exist.");
             return false;
         }
         $cols = $query->columnCount();
-        
+            
         for ($i = 0; $i < $cols; $i++) {
-            $meta = $query->getColumnMeta(0);
+            $meta = $query->getColumnMeta($i);
             $flags = $meta["flags"];
             $colName = $meta["name"];
+            
+            if (in_array("primary_key", $flags)) {
+                $class::$cle[] = $colName;
+            }
 
-            static::$dynamicAttributes[] = $colName;
-            if (in_array("primary_key", $flags)) static::$cle[] = $colName;
-            else if (in_array("not_null", $flags)) static::$requiredAttributes[] = $colName;
+            else if (in_array("not_null", $flags)) {
+                $class::$requiredAttributes[] = $colName;
+            }
+
+            else {
+                $class::$optionalAttributes[] = $colName;
+            }
         }
+
+        /*
+        echo "\nCLE : "; var_dump($class::$cle);
+        echo "\nREQ : "; var_dump($class::$requiredAttributes);
+        echo "\nOPT : "; var_dump($class::$optionalAttributes);
+        echo "\n\n";
+        */
     }
 
     /**
      * This function is used to handle the GET request for a table.
      */
     public static function handleGetRequestTable() {
-        $table = static::$table;
+        $class = get_called_class();
+        $table = $class::$table;
         Router::addRoute('GET', "/table/$table", function() {
             $db = Database::$conn;
-            $table = static::$table;
+            $class = get_called_class();
+            $table = $class::$table;
             $rows = $_GET['rows'] ?? null;
             $orderby = $_GET['orderby'] ?? null;
             $query = "SELECT * FROM `$table`";
             
             if ($orderby) {
-                if (!in_array($orderby, static::$requiredAttributes) && !in_array($orderby, static::$cle)) {
+                if (
+                    !in_array($orderby, $class::$requiredAttributes)
+                    && !in_array($orderby, $class::$optionalAttributes)
+                    && !in_array($orderby, $class::$optionalAttributes)
+                ) {
+                    /*
+                    $dump = array(
+                        "table" => $table,
+                        "cle" => $class::$cle,
+                        "req" => $class::$requiredAttributes,
+                        "opt" => $class::$optionalAttributes
+                    );
+                    */
+                    echo json_encode($dump);
                     throw new Exception("Column $orderby doesn't exist in $table.");
                     return false;
                 }
@@ -141,10 +176,11 @@ abstract class Modele {
 
         Router::addRoute('GET', "/$className", function()
         {
+            $class = get_called_class();
             $data = $_GET;
     
             try {
-                $classInstance = new static::$table($data, CONSTRUCT_GET);
+                $classInstance = new $class::$table($data, CONSTRUCT_GET);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
@@ -165,7 +201,7 @@ abstract class Modele {
      * This function is used to handle the POST request for a table.
      */
     public static function handlePostRequest() {
-        $className = static::$table;
+        $className = get_called_class();
         require_once($className . ".php");
 
         if (!class_exists($className)) {
@@ -178,7 +214,7 @@ abstract class Modele {
             $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
     
             try {
-                $classInstance = new static::$table($data, CONSTRUCT_POST);
+                $classInstance = new $className::$table($data, CONSTRUCT_POST);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
@@ -199,7 +235,7 @@ abstract class Modele {
      * This function is used to handle the PUT request for a table.
      */
     public static function handlePutRequest() {
-        $className = static::$table;
+        $className = get_called_class();
         require_once($className . ".php");
 
         if (!class_exists($className)) {
@@ -212,7 +248,7 @@ abstract class Modele {
             $data = json_decode(file_get_contents("php://input"), true, JSON_THROW_ON_ERROR);
     
             try {
-                $classInstance = new static::$table($data, CONSTRUCT_PUT);
+                $classInstance = new $className::$table($data, CONSTRUCT_PUT);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
@@ -233,7 +269,7 @@ abstract class Modele {
      * This function is used to handle the DELETE request for a table.
      */
     public static function handleDeleteRequest() {
-        $className = static::$table;
+        $className = get_called_class();
         require_once($className . ".php");
 
         if (!class_exists($className)) {
@@ -246,7 +282,7 @@ abstract class Modele {
             $data = $_GET;
     
             try {
-                $classInstance = new static::$table($data, CONSTRUCT_DELETE);
+                $classInstance = new $className::$table($data, CONSTRUCT_DELETE);
             } catch (Throwable $e) {
                 objectCreateError($e->getMessage(), $data);
                 return;
@@ -268,11 +304,12 @@ abstract class Modele {
     * @return array|null The result of the get.
     */
     public function getFromDb() {
+        $class = get_called_class();
         $db = Database::$conn;
         $argsList = "";
 
         // argsList : (arg1 = :arg1) AND (arg2 = :arg2)
-        foreach (static::$cle as $attr) {
+        foreach ($class::$cle as $attr) {
             if ($argsList == "") {
                 $argsList = "($attr=:$attr)";
             } else {
@@ -280,10 +317,10 @@ abstract class Modele {
             }
         }
 
-        $query = "SELECT * FROM " . static::$table . " WHERE " . $argsList;
+        $query = "SELECT * FROM " . $class::$table . " WHERE " . $argsList;
         $stmt = $db->prepare($query);
 
-        foreach (static::$cle as $attr) {
+        foreach ($class::$cle as $attr) {
             if ($this->get($attr) === null) {
                 throw new ArgumentCountError("Key value $attr not set.");
                 return false;
@@ -309,6 +346,7 @@ abstract class Modele {
     */
     public function pushToDb() {
         $db = Database::$conn;
+        $class = get_called_class();
 
         $attrList = "";
         $argsList = "";
@@ -317,7 +355,7 @@ abstract class Modele {
          * attrList : (arg1, arg2, arg3)
          * argsList : (:arg1, :arg2, :arg3)
         */
-        foreach (static::$requiredAttributes as $attr) {
+        foreach ($class::$requiredAttributes as $attr) {
             if ($attrList == "") {
                 $attrList = "($attr";
                 $argsList = "(:$attr";
@@ -330,10 +368,10 @@ abstract class Modele {
         $attrList = $attrList . ")";
         $argsList = $argsList . ")";
 
-        $query = "INSERT INTO " . static::$table . $attrList . " VALUES " . $argsList;
+        $query = "INSERT INTO " . $class::$table . $attrList . " VALUES " . $argsList;
         $stmt = $db->prepare($query);
 
-        foreach (static::$requiredAttributes as $attr) {
+        foreach ($class::$requiredAttributes as $attr) {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
@@ -350,9 +388,10 @@ abstract class Modele {
     public function updateToDb() {
         $db = Database::$conn;
         $keyList = "";
+        $class = get_called_class();
 
         // keyList : (key1 = :key1) AND (key2 = :key2)
-        foreach (static::$cle as $attr) {
+        foreach ($class::$cle as $attr) {
             if ($keyList == "") {
                 $keyList = "($attr=:$attr)";
             } else {
@@ -362,7 +401,7 @@ abstract class Modele {
 
         $argsList = "";
         // argsList : arg1 = :arg1, arg2 = :arg2
-        foreach (static::$requiredAttributes as $attr) {
+        foreach ($class::$requiredAttributes as $attr) {
             if ($argsList == "") {
                 $argsList = "$attr=:$attr";
             } else {
@@ -370,11 +409,11 @@ abstract class Modele {
             }
         }
 
-        $query = "UPDATE " . static::$table . " SET " . $argsList . " WHERE " . $keyList;
+        $query = "UPDATE " . $class::$table . " SET " . $argsList . " WHERE " . $keyList;
         $stmt = $db->prepare($query);
 
         // Insertion des clés
-        foreach (static::$cle as $attr) {
+        foreach ($class::$cle as $attr) {
             if ($this->get($attr) === null) {
                 throw new ArgumentCountError("Key value $attr not set.");
             }
@@ -384,7 +423,7 @@ abstract class Modele {
         }
 
         // Insertion des valeurs à update (on les met toutes au cas où)
-        foreach (static::$requiredAttributes as $attr) {
+        foreach ($class::$requiredAttributes as $attr) {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
@@ -401,9 +440,10 @@ abstract class Modele {
     public function deleteFromDb() {
         $db = Database::$conn;
         $argsList = "";
+        $class = get_called_class();
 
         // argsList : (arg1 = :arg1) AND (arg2 = :arg2)
-        foreach (static::$cle as $attr) {
+        foreach ($class::$cle as $attr) {
             if ($argsList == "") {
                 $argsList = "($attr=:$attr)";
             } else {
@@ -411,10 +451,10 @@ abstract class Modele {
             }
         }
 
-        $query = "DELETE FROM " . static::$table . " WHERE " . $argsList;
+        $query = "DELETE FROM " . $class::$table . " WHERE " . $argsList;
         $stmt = $db->prepare($query);
 
-        foreach (static::$cle as $attr) {
+        foreach ($class::$cle as $attr) {
             if ($this->get($attr) === null) {
                 throw new ArgumentCountError("Key value $attr not set.");
                 return false;
