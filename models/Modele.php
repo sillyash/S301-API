@@ -108,8 +108,8 @@ abstract class Modele extends stdClass {
                         "req" => $class::$requiredAttributes,
                         "opt" => $class::$optionalAttributes
                     );
-                    */
                     echo json_encode($dump);
+                    */
                     throw new Exception("Column $orderby doesn't exist in $table.");
                     return false;
                 }
