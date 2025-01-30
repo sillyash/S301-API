@@ -9,6 +9,7 @@
 │   ├── db.php
 │   ├── delete_routes.php
 │   ├── get_routes.php
+│   ├── Mail.php
 │   ├── post_routes.php
 │   ├── put_routes.php
 │   └── Router.php

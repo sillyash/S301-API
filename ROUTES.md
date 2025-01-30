@@ -55,6 +55,57 @@ Avoid passing generated values (e.g. `id` or `created_at`), as they will be gene
 
 Other arguments will be set.
 
+### Mail usage
+
+- `/mail/notifications` : sends notification emails to recipients
+  - Arguments: 
+  ```json
+  {
+    "to" : ["nice.guy@gmail.com", "another.gal@yahoo.net"],
+    "subject" : "Super cool notification",
+    "notification" : "<span color='red'>Cool</span> notification !",
+    "headers" : {
+      "From" : "myproject@host.com",
+      "Reply-To" : "noreply@host.com",
+      "MIME-Version" : "1.0",
+      "Content-type" : "text/html; charset=utf-8"
+    }
+  }
+  ```
+  - The headers are optional.
+- `/mail/accountValidation` : sends account validation emails to recipients
+  - Arguments: 
+  ```json
+  {
+    "to" : ["user@example.com"],
+    "subject" : "Account Validation",
+    "url" : "https://example.com/validate?token=abc123",
+    "headers" : {
+      "From" : "no-reply@example.com",
+      "Reply-To" : "support@example.com",
+      "MIME-Version" : "1.0",
+      "Content-type" : "text/html; charset=utf-8"
+    }
+  }
+  ```
+  - The headers are optional.
+- `/mail/invites` : sends invite emails to recipients
+  - Arguments: 
+  ```json
+  {
+    "to" : ["invitee@example.com"],
+    "subject" : "You're Invited!",
+    "url" : "https://example.com/invite?token=xyz789",
+    "headers" : {
+      "From" : "no-reply@example.com",
+      "Reply-To" : "support@example.com",
+      "MIME-Version" : "1.0",
+      "Content-type" : "text/html; charset=utf-8"
+    }
+  }
+  ```
+  - The headers are optional.
+
 ### Example
 
 - `/Proposition` : inserts a Proposition in the database
