@@ -27,6 +27,8 @@ if (!defined('DB_PASS')) define('DB_PASS', 'vZnmFpECUAvJTwCf');
 if (!defined('EMAIL_FROM')) define('EMAIL_FROM', 'prj-mmorich@projets.iut-oray.fr');
 if (!defined('EMAIL_REPLY_TO')) define('EMAIL_REPLY_TO', 'noreply@projets.iut-oray.fr');
 if (!defined('EMAIL_HEADERS')) define('EMAIL_HEADERS', array(
+    'MIME-Version' => '1.0',
+    'Content-type' => 'text/html; charset=utf-8',
     'From' => EMAIL_FROM,
     'Reply-To' => EMAIL_REPLY_TO,
     'X-Mailer' => 'PHP/' . phpversion()
