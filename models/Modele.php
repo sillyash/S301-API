@@ -46,8 +46,6 @@ abstract class Modele extends stdClass {
         $class::$requiredAttributes = [];
         $class::$optionalAttributes = [];
 
-        echo "TABLE : " . $class::$table;
-
         $db = Database::$conn;
         $query = $db->query("SELECT * FROM " . $class::$table . " LIMIT 1");
         

@@ -74,10 +74,10 @@ class Router {
             call_user_func(static::$routes[$method][$uri]);
         } catch (Throwable $e) {
             header("HTTP/1.0 500 Internal Server Error");
-            /*echo json_encode([
+            echo json_encode([
                 "message" => "We encountered an error while running your request.",
                 "error" => $e->getMessage(),
-            ]);*/
+            ]);
             return;
         }
     }
