@@ -2,7 +2,7 @@
 require_once 'Modele.php';
 
 class Internaute extends Modele {
-    protected static string $table = 'A_pour_reaction';
+    protected static string $table = 'Internaute';
 	protected static array $dynamicAttributes = [];
 }
 

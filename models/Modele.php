@@ -44,7 +44,7 @@ abstract class Modele {
         static::$requiredAttributes = [];
 
         $db = Database::$conn;
-        $query = $db->query("SELECT * FROM " . static::$table . "LIMIT 1");
+        $query = $db->query("SELECT * FROM " . static::$table . " LIMIT 1");
         
         if (!$query) {
             throw new Exception("Table " . static::$table . " doesn't exist.");

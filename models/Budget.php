@@ -2,8 +2,8 @@
 require_once 'Modele.php';
 
 class Budget extends Modele {
-    protected static string $table = 'A_pour_reaction';
-	protected static array $dynamicAttributes = [];
+    protected static string $table = 'Budget';
+		protected static array $dynamicAttributes = [];
 }
 
 ?>
