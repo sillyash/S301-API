@@ -96,7 +96,7 @@ class Mail {
         $message = "<html><body>";
         $message .= "<h1>Hello,</h1>";
         $message .= "<p>You need to validate your DemocHub account by clicking";
-        $message .= "<a href='$url'>here</a> or by pasting the following URL in your browser :</p>";
+        $message .= " <a href='$url'>here</a> or by pasting the following URL in your browser :</p>";
         $message .= "<p>$url</p>";
         $message .= "<p>Best regards,<br>The DemocHub team</p>";
         $message .= "</body></html>";
@@ -121,7 +121,7 @@ class Mail {
         $message = "<html><body>";
         $message .= "<h1>Hello,</h1>";
         $message .= "<p>You have been invited to join a DemocHub group by clicking";
-        $message .= "<a href='$url'>here</a> or by pasting the following URL in your browser :</p>";
+        $message .= " <a href='$url'>here</a> or by pasting the following URL in your browser :</p>";
         $message .= "<p>$url</p>";
         $message .= "<p>Best regards,<br>The DemocHub team</p>";
         $message .= "</body></html>";
