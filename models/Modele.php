@@ -363,6 +363,11 @@ abstract class Modele extends stdClass {
                 $argsList = "$argsList, :$attr";
             }
         }
+
+        if ($class::$table == "Internaute") {
+            $attrList = $attrList . ", loginInter";
+            $argsList = $argsList . ", :loginInter";
+        }
         
         $attrList = $attrList . ")";
         $argsList = $argsList . ")";
@@ -374,6 +379,10 @@ abstract class Modele extends stdClass {
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
+        }
+
+        if ($class::$table == "Internaute") {
+            $stmt->bindValue(":loginInter", $this->get("loginInter"), PDO::PARAM_STR);
         }
         
         $stmt->execute();
