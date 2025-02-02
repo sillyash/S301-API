@@ -368,6 +368,19 @@ abstract class Modele extends stdClass {
             $attrList = $attrList . ", loginInter";
             $argsList = $argsList . ", :loginInter";
         }
+
+        foreach ($class::$optionalAttributes as $attr) {
+            if ($this->get($attr) === null) {
+                continue;
+            }
+            if ($attrList == "") {
+                $attrList = "($attr";
+                $argsList = "(:$attr";
+            } else {
+                $attrList = "$attrList, $attr";
+                $argsList = "$argsList, :$attr";
+            }
+        }
         
         $attrList = $attrList . ")";
         $argsList = $argsList . ")";
@@ -380,9 +393,18 @@ abstract class Modele extends stdClass {
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
         }
-
+        
         if ($class::$table == "Internaute") {
             $stmt->bindValue(":loginInter", $this->get("loginInter"), PDO::PARAM_STR);
+        }
+
+        foreach ($class::$optionalAttributes as $attr) {
+            if ($this->get($attr) === null) {
+                continue;
+            }
+            $val = $this->get($attr);
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindValue(":$attr", $val, $PDOtype);
         }
         
         $stmt->execute();
@@ -417,6 +439,17 @@ abstract class Modele extends stdClass {
             }
         }
 
+        foreach ($class::$optionalAttributes as $attr) {
+            if ($this->get($attr) === null) {
+                continue;
+            }
+            if ($argsList == "") {
+                $argsList = "$attr=:$attr";
+            } else {
+                $argsList .= ", $attr=:$attr)";
+            }
+        }
+
         $query = "UPDATE " . $class::$table . " SET " . $argsList . " WHERE " . $keyList;
         $stmt = $db->prepare($query);
 
@@ -432,6 +465,15 @@ abstract class Modele extends stdClass {
 
         // Insertion des valeurs à update (on les met toutes au cas où)
         foreach ($class::$requiredAttributes as $attr) {
+            $val = $this->get($attr);
+            $PDOtype = static::getPDOtype($val);
+            $stmt->bindValue(":$attr", $val, $PDOtype);
+        }
+
+        foreach ($class::$optionalAttributes as $attr) {
+            if ($this->get($attr) === null) {
+                continue;
+            }
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
