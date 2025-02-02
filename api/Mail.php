@@ -34,7 +34,7 @@ class Mail {
                 return;
             }
 
-            static::sendAccountValidation($to, $subject, $url, $headers);
+            static::sendAccountValidation($to, $url, $subject, $headers);
         });
     }
 
@@ -55,7 +55,7 @@ class Mail {
                 return;
             }
 
-            static::sendAccountValidation($to, $subject, $url, $headers);
+            static::sendInvites($to, $url, $subject, $headers);
         });
     }
 
@@ -76,7 +76,7 @@ class Mail {
                 return;
             }
 
-            static::sendNotifications($to, $subject, $notification, $headers);
+            static::sendNotifications($to, $notification, $subject, $headers);
         });
     }
 
@@ -140,8 +140,8 @@ class Mail {
      */
     public static function sendNotifications(
         array $to,
-        string $subject,
         string $notification,
+        string $subject = 'DemocHub notification',
         array $headers = EMAIL_HEADERS) : void {
         $message = "<html><body>";
         $message .= "<h1>Hello,</h1>";
