@@ -29,7 +29,7 @@ class Mail {
             $url = $data['url'] ?? null;
             $headers = $data['headers'] ?? EMAIL_HEADERS;
 
-            if ($to === null || $subject === null || $url === null) {
+            if ($to === null || $url === null) {
                 fieldsIncomplete($data);
                 return;
             }
@@ -50,7 +50,7 @@ class Mail {
             $url = $data['url'] ?? null;
             $headers = $data['headers'] ?? EMAIL_HEADERS;
 
-            if ($to === null || $subject === null || $url === null) {
+            if ($to === null || $url === null) {
                 fieldsIncomplete($data);
                 return;
             }
@@ -71,7 +71,7 @@ class Mail {
             $notification = $data['notification'] ?? null;
             $headers = $data['headers'] ?? EMAIL_HEADERS;
 
-            if ($to === null || $subject === null || $notification === null) {
+            if ($to === null || $notification === null) {
                 fieldsIncomplete($data);
                 return;
             }
@@ -90,8 +90,8 @@ class Mail {
      */
     public static function sendAccountValidation(
         array $to,
-        string $subject,
         string $url,
+        string $subject = 'DemocHub account validation',
         array $headers = EMAIL_HEADERS) : void {
         $message = "<html><body>";
         $message .= "<h1>Hello,</h1>";
@@ -115,12 +115,12 @@ class Mail {
      */
     public static function sendInvites(
         array $to,
-        string $subject,
         string $url,
+        string $subject = 'DemocHub group invitation',
         array $headers = EMAIL_HEADERS) : void {
         $message = "<html><body>";
         $message .= "<h1>Hello,</h1>";
-        $message .= "<p>You have been invited to join a DemocHub group by clicking";
+        $message .= "<p>You have been invited to join a DemocHub group. Join the group by clicking";
         $message .= " <a href='$url'>here</a> or by pasting the following URL in your browser :</p>";
         $message .= "<p>$url</p>";
         $message .= "<p>Best regards,<br>The DemocHub team</p>";
