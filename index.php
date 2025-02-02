@@ -44,6 +44,16 @@ Signalement::init();
 Theme::init();
 Vote::init();
 
+/* Views */
+require_once(ROOT_PATH . '/views/BudgetsParThematique.php');
+require_once(ROOT_PATH . '/views/GroupesUtilisateur.php');
+require_once(ROOT_PATH . '/views/MembresGroupe.php');
+require_once(ROOT_PATH . '/views/PropositionsPopulaires.php');
+require_once(ROOT_PATH . '/views/PropositionsRecentes.php');
+require_once(ROOT_PATH . '/views/PropositionsUtilisateur.php');
+require_once(ROOT_PATH . '/views/PropositionsValidees.php');
+require_once(ROOT_PATH . '/views/VueBudgetsParThematique.php');
+
 require_once(ROOT_PATH . '/api/api.php');
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

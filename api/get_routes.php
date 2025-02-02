@@ -57,4 +57,13 @@ Signalement::handleGetRequest();
 Theme::handleGetRequest();
 Vote::handleGetRequest();
 
+BudgetsParThematique::handleGetRequest();
+GroupesUtilisateur::handleGetRequest();
+MembresGroupe::handleGetRequest();
+PropositionsPopulaires::handleGetRequest();
+PropositionsRecentes::handleGetRequest();
+PropositionsUtilisateur::handleGetRequest();
+PropositionsValidees::handleGetRequest();
+VueBudgetsParThematique::handleGetRequest();
+
 ?>
