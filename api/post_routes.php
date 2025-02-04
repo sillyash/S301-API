@@ -25,4 +25,6 @@ Mail::handleAccountValidation();
 Mail::handleInvites();
 Mail::handleNotifications();
 
+AddUserToGroup::handlePostRequest();
+
 ?>

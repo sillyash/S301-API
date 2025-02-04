@@ -54,6 +54,9 @@ require_once(ROOT_PATH . '/views/PropositionsUtilisateur.php');
 require_once(ROOT_PATH . '/views/PropositionsValidees.php');
 require_once(ROOT_PATH . '/views/VueBudgetsParThematique.php');
 
+/* Procedures */
+require_once(ROOT_PATH . '/procs/addUserToGroup.php');
+
 require_once(ROOT_PATH . '/api/api.php');
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
