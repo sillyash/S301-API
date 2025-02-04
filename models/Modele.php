@@ -432,6 +432,7 @@ abstract class Modele extends stdClass {
         $argsList = "";
         // argsList : arg1 = :arg1, arg2 = :arg2
         foreach ($class::$requiredAttributes as $attr) {
+            if ($this->get($attr) === null) continue;
             if ($argsList == "") {
                 $argsList = "$attr=:$attr";
             } else {
@@ -440,9 +441,7 @@ abstract class Modele extends stdClass {
         }
 
         foreach ($class::$optionalAttributes as $attr) {
-            if ($this->get($attr) === null) {
-                continue;
-            }
+            if ($this->get($attr) === null) continue;
             if ($argsList == "") {
                 $argsList = "$attr=:$attr";
             } else {
@@ -465,15 +464,14 @@ abstract class Modele extends stdClass {
 
         // Insertion des valeurs à update (on les met toutes au cas où)
         foreach ($class::$requiredAttributes as $attr) {
+            if ($this->get($attr) === null) continue;
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
         }
 
         foreach ($class::$optionalAttributes as $attr) {
-            if ($this->get($attr) === null) {
-                continue;
-            }
+            if ($this->get($attr) === null) continue;
             $val = $this->get($attr);
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
