@@ -10,11 +10,11 @@ abstract class Procedure {
         $name = $class::$name;
         Router::addRoute('POST', "/proc/$name", function() {
             try {
-                $data = json_decode(file_get_contents('php://input'));
+                $data = json_decode(file_get_contents('php://input'), true);
                 $inUser = $data['in'] ?? null;
                 $outUser = $data['out'] ?? null;
             } catch (Throwable $e) {
-                fieldsIncomplete($data);
+                fieldsIncomplete($data, $e->getMessage());
                 return;
             }
 
@@ -33,39 +33,59 @@ abstract class Procedure {
         });
     }
 
-    public static function callProc(array $inUser, array& $outUser = array()) {
+    public static function callProc(array $inUser, array& $outUser = null) {
         $class = get_called_class();
-        if ($class::$in) static::checkArgsIn($inUser);
-        if ($class::$out) static::checkArgsOut($outUser);
-
+        $inarr = $class::$in;
+        $outarr = $class::$out;
+        
+        if ($inarr) static::checkArgsIn($inUser);
+        if ($outarr) static::checkArgsOut($outUser);
+        
         $db = Database::$conn;
         $name = $class::$name;
         $sql = "CALL $name(";
-
+        
         $inList = "";
-        foreach ($class::$in as $in) {
-            if ($inList == "") $inList .= ":$in";
-            $inList .= ", :$in";
+        if ($inarr) {
+            foreach ($inarr as $in) {
+                if ($inList == "") $inList .= ":$in";
+                else $inList .= ", :$in";
+            }
         }
-
+        
         $outList = "";
-        foreach ($class::$out as $out) {
-            if ($outList == "") $outList .= ":$out";
-            $outList .= ", :$out";
+        if ($outarr) {
+            foreach ($outarr as $out) {
+                if ($outList == "") $outList .= ":$out";
+                else $outList .= ", :$out";
+            }
+        }
+        
+        //var_dump($inarr);
+        //echo "inList : $inList";
+        
+        $sql .= $inList;
+        if (!empty($outList)) {
+            $sql .= ", $outList";
         }
 
-        $sql .= $inList;
-        if (!empty($outList)) $sql .= ", $outList)";
-        else $sql .= ")";
-
+        $sql .= ")";
         $stmt = $db->prepare($sql);
         
-        foreach ($class::$in as $in) {
-            $stmt->bindParam(":$in", $inUser[$in]);
+        if ($inarr) {
+            foreach ($inarr as $in) {
+                $attr = ":$in";
+                $val = $inUser[$in];
+                $stmt->bindParam($attr, $val);
+            }
         }
 
-        foreach ($class::$out as $out) {
-            $stmt->bindParam(":$out", $outUser[$out]);
+        if ($outarr) {
+            foreach ($outarr as $out) {
+                $attr = ":$out";
+                $val = $inUser[$out];
+                $stmt->bindParam($attr, $val);
+            }
         }
 
         try {
@@ -76,6 +96,7 @@ abstract class Procedure {
     }
 
     public static function checkArgsIn(array $inUser) {
+        $class = get_called_class();
         if (!$class::$in) return;
 
         $class = get_called_class();
@@ -87,6 +108,7 @@ abstract class Procedure {
     }
 
     public static function checkArgsOut(array& $outUser) {
+        $class = get_called_class();
         if (!$class::$out) return;
 
         $class = get_called_class();
