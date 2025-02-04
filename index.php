@@ -53,6 +53,9 @@ require_once(ROOT_PATH . '/views/PropositionsRecentes.php');
 require_once(ROOT_PATH . '/views/PropositionsUtilisateur.php');
 require_once(ROOT_PATH . '/views/PropositionsValidees.php');
 require_once(ROOT_PATH . '/views/VueBudgetsParThematique.php');
+require_once(ROOT_PATH . '/views/ScrutinsGroupe.php');
+require_once(ROOT_PATH . '/views/PropositionsGroupe.php');
+require_once(ROOT_PATH . '/views/PropositionsDetaillees.php');
 
 /* Procedures */
 require_once(ROOT_PATH . '/procs/addUserToGroup.php');

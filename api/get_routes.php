@@ -65,5 +65,8 @@ PropositionsRecentes::handleGetRequest();
 PropositionsUtilisateur::handleGetRequest();
 PropositionsValidees::handleGetRequest();
 VueBudgetsParThematique::handleGetRequest();
+ScrutinsGroupe::handleGetRequest();
+PropositionsGroupe::handleGetRequest();
+PropositionsDetaillees::handleGetRequest();
 
 ?>
