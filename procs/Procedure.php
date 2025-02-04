@@ -61,29 +61,29 @@ abstract class Procedure {
             }
         }
         
-        //var_dump($inarr);
-        //echo "inList : $inList";
-        
         $sql .= $inList;
         if (!empty($outList)) {
             $sql .= ", $outList";
         }
 
         $sql .= ")";
+        
         $stmt = $db->prepare($sql);
         
         if ($inarr) {
             foreach ($inarr as $in) {
                 $attr = ":$in";
                 $val = $inUser[$in];
-                $stmt->bindParam($attr, $val);
+                //echo "attr : $attr, val : $val\n";
+                $stmt->bindValue($attr, $val);
             }
         }
 
         if ($outarr) {
             foreach ($outarr as $out) {
                 $attr = ":$out";
-                $val = $inUser[$out];
+                $val = $outUser[$out];
+                //echo "attr : $attr, val : $val\n";
                 $stmt->bindParam($attr, $val);
             }
         }
@@ -107,7 +107,7 @@ abstract class Procedure {
         }
     }
 
-    public static function checkArgsOut(array& $outUser) {
+    public static function checkArgsOut(array $outUser) {
         $class = get_called_class();
         if (!$class::$out) return;
 
