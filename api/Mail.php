@@ -34,7 +34,8 @@ class Mail {
                 return;
             }
 
-            static::sendAccountValidation($to, $url, $subject, $headers);
+            if ($subject) static::sendAccountValidation($to, $url, $subject, $headers);
+            else static::sendAccountValidation($to, $url);
         });
     }
 
@@ -55,7 +56,8 @@ class Mail {
                 return;
             }
 
-            static::sendInvites($to, $url, $subject, $headers);
+            if ($subject) static::sendInvites($to, $url, $subject, $headers);
+            else static::sendInvites($to, $url);
         });
     }
 
@@ -76,7 +78,8 @@ class Mail {
                 return;
             }
 
-            static::sendNotifications($to, $notification, $subject, $headers);
+            if ($subject) static::sendNotifications($to, $notification, $subject, $headers);
+            else static::sendNotifications($to, $notification);
         });
     }
 
