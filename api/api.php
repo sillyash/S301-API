@@ -55,13 +55,21 @@ function deletionSuccess(mixed $object) {
  * @param mixed $data The data that was used to create the object.
  * @return void
  */
-function fieldsIncomplete(mixed $data) {
+function fieldsIncomplete(mixed $data, mixed $error = null) {
     header("HTTP/1.1 400 Bad Request");
 
-    $response = array(
-        "message" => "Please fill in all fields",
-        "data" => $data
-    );
+    if ($error) {
+        $response = array(
+            "message" => "Please fill in all fields",
+            "error" => $error,
+            "data" => $data
+        );
+    } else {
+        $response = array(
+            "message" => "Please fill in all fields",
+            "data" => $data
+        );
+    }
 
     echo json_encode($response);
 }
