@@ -59,6 +59,7 @@ require_once(ROOT_PATH . '/views/PropositionsDetaillees.php');
 
 /* Procedures */
 require_once(ROOT_PATH . '/procs/addUserToGroup.php');
+require_once(ROOT_PATH . '/procs/CreerProposition.php');
 
 require_once(ROOT_PATH . '/api/api.php');
 
