@@ -26,5 +26,6 @@ Mail::handleInvites();
 Mail::handleNotifications();
 
 AddUserToGroup::handlePostRequest();
+CreerProposition::handlePostRequest();
 
 ?>
