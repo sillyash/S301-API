@@ -10,6 +10,7 @@ abstract class Modele extends stdClass {
     protected static array $cle;
     protected static array $requiredAttributes;
     protected static array $optionalAttributes;
+    protected static bool $keyRequiredForPost = false;
 
     public function __construct(array | object $attrs, int $flag = CONSTRUCT_POST) {
         $class = get_called_class();
@@ -364,9 +365,16 @@ abstract class Modele extends stdClass {
             }
         }
 
-        if ($class::$table == "Internaute") {
-            $attrList = $attrList . ", loginInter";
-            $argsList = $argsList . ", :loginInter";
+        if ($class::$keyRequiredForPost) {
+            foreach ($class::$cle as $attr) {
+                if ($attrList == "") {
+                    $attrList = "($attr";
+                    $argsList = "(:$attr";
+                } else {
+                    $attrList = "$attrList, $attr";
+                    $argsList = "$argsList, :$attr";
+                }
+            }
         }
 
         foreach ($class::$optionalAttributes as $attr) {
@@ -393,9 +401,13 @@ abstract class Modele extends stdClass {
             $PDOtype = static::getPDOtype($val);
             $stmt->bindValue(":$attr", $val, $PDOtype);
         }
-        
-        if ($class::$table == "Internaute") {
-            $stmt->bindValue(":loginInter", $this->get("loginInter"), PDO::PARAM_STR);
+
+        if ($class::$keyRequiredForPost) {
+            foreach ($class::$cle as $attr) {
+                $val = $this->get($attr);
+                $PDOtype = static::getPDOtype($val);
+                $stmt->bindValue(":$attr", $val, $PDOtype);
+            }
         }
 
         foreach ($class::$optionalAttributes as $attr) {
