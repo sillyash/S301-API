@@ -57,16 +57,16 @@ Signalement::handleGetRequest();
 Theme::handleGetRequest();
 Vote::handleGetRequest();
 
-BudgetsParThematique::handleGetRequest();
+BudgetsGroupe::handleGetRequest();
 GroupesUtilisateur::handleGetRequest();
 MembresGroupe::handleGetRequest();
+PropositionsDetaillees::handleGetRequest();
+PropositionsGroupe::handleGetRequest();
 PropositionsPopulaires::handleGetRequest();
 PropositionsRecentes::handleGetRequest();
 PropositionsUtilisateur::handleGetRequest();
 PropositionsValidees::handleGetRequest();
-VueBudgetsParThematique::handleGetRequest();
 ScrutinsGroupe::handleGetRequest();
-PropositionsGroupe::handleGetRequest();
-PropositionsDetaillees::handleGetRequest();
+ThemesGroupe::handleGetRequest();
 
 ?>
