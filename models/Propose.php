@@ -6,6 +6,7 @@ class Propose extends Modele {
   protected static array $cle = [];
   protected static array $requiredAttributes = [];
   protected static array $optionalAttributes = [];
+  protected static bool $keyRequiredForPost = true;
 }
 
 ?>
